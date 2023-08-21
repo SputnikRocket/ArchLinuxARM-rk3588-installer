@@ -9,46 +9,13 @@ requires:
 gptfdisk,
 wget,
 arch-chroot,
+bsdtar,
 active internet connection,
-And to be run as root
+to be run as root(not sudo), 
+and arm64 host
 
 `<devname> refers to intire path of target install device, eg. /dev/sd*`
 
-general script run secuence:
+`# ./run.sh <devname>`
 
-```
-scripts/workdir-prepare.sh
-scripts/sync.sh
-scripts/mkdisk.sh <devname>
-scripts/sync.sh
-scripts/diskmount.sh <devname>
-scripts/sync.sh
-scripts/bootstraprootfs.sh
-scripts/sync.sh
-scripts/remountboot.sh <devname>
-scripts/sync.sh
-scripts/overlay-pre.sh
-scripts/sync.sh
-scripts/pacman-init.sh
-scripts/sync.sh
-scripts/pacman-bredos-init.sh
-scripts/sync.sh
-scripts/overlay-post.sh
-scripts/sync.sh
-scripts/pacman-remove-kernel.sh
-scripts/sync.sh
-scripts/get-kernel.sh
-scripts/sync.sh
-scripts/pacman-install-rk-kernel.sh
-scripts/sync.sh
-scripts/setup-kernel.sh
-scripts/sync.sh
-scripts/install-grub.sh <devname>
-scripts/sync.sh
-scripts/mkfstab.sh
-scripts/sync.sh
-scripts/done.sh
-scripts/sync.sh
-scripts/workdir-clean.sh
-```
 ## PRs welcome
