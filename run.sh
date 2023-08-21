@@ -100,7 +100,7 @@ sync
 
 #get required files
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-keyring-20230818-1-any.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
