@@ -288,6 +288,9 @@ then
 fi
 sync
 
+echo "success! you may now remove ${DISKDEVICE}"
+exit 0
+
 
 
 
