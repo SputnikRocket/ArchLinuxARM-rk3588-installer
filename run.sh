@@ -108,7 +108,7 @@ fi
 sync
 
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
@@ -116,7 +116,7 @@ fi
 sync
 
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
@@ -124,7 +124,7 @@ fi
 sync
 
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-image-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.zst"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
@@ -132,7 +132,7 @@ fi
 sync
 
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-rockchip-rk3588-mkinitcpio-1.0.0-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
@@ -140,7 +140,7 @@ fi
 sync
 
 get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-dtbs-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 9
@@ -149,7 +149,7 @@ sync
 
 #mount tmp downloads
 mount-dltmp "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 10
@@ -158,7 +158,7 @@ sync
 
 #initialize pacman
 pac-init "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -166,7 +166,7 @@ fi
 sync
 
 pac-update "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -174,7 +174,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "bredos-keyring-20230818-1-any.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -182,7 +182,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -190,7 +190,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -198,7 +198,7 @@ fi
 sync
 
 pac-update "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 11
@@ -207,7 +207,7 @@ sync
 
 #setup kernel
 pac-remove "${WORKDIR}" "linux-aarch64"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 12
@@ -215,7 +215,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "linux-image-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.zst"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 12
@@ -223,7 +223,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "linux-rockchip-rk3588-mkinitcpio-1.0.0-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 12
@@ -231,7 +231,7 @@ fi
 sync
 
 pac-install-local "${WORKDIR}" "linux-dtbs-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.xz"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 12
@@ -239,7 +239,7 @@ fi
 sync
 
 setup-mkinitcpio "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 12
@@ -248,7 +248,7 @@ sync
 
 #install grub
 pac-install "${WORKDIR}" "grub"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 13
@@ -256,7 +256,7 @@ fi
 sync
 
 install-grub "${WORKDIR}" "${DISKDEVICE}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 13
@@ -264,7 +264,7 @@ fi
 sync
 
 mkfstab "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 13
@@ -273,7 +273,7 @@ sync
 
 #wrap up
 unmount-workdirs "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 14
@@ -281,7 +281,7 @@ fi
 sync
 
 clean-workdir "${WORKDIR}"
- [ "${?}" -ne "0" ]
+if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
 	exit 14
