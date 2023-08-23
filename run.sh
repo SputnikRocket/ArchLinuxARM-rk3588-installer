@@ -24,13 +24,12 @@ sync
 
 #are you sure?
 read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
-if [ ${CONTINUE} = "Y" ]
+if [[ ${CONTINUE} != [Yy]* ]]
 then
-	echo "continuing.."
-else
 	echo "Abort!"
 	exit 100
 fi
+echo "continuing.."
 
 #setup workdirs
 setup-workdir "${WORKDIR}"
