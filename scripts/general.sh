@@ -28,7 +28,7 @@ function get-file() {
 		return 1
 	fi
     
-	wget ${URL}
+	wget -nv ${URL}
 	if [ "${?}" -ne "0" ]
 	then
 		echo "failed to get file!"
