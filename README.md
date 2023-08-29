@@ -7,7 +7,7 @@ requires [edk2-porting/edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588)
 
 requires:
 gptfdisk,
-wget,
+aria2,
 arch-chroot,
 bsdtar,
 active internet connection,

@@ -28,7 +28,7 @@ function get-file() {
 		return 1
 	fi
     
-	wget -nv ${URL}
+	aria2c ${URL}
 	if [ "${?}" -ne "0" ]
 	then
 		echo "failed to get file!"
