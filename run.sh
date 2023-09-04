@@ -1,11 +1,7 @@
 #/bin/bash
 
-DISKDEVICE=${1}
-WORKDIR=workdir
-ROOTFSDIR=root
-BOOTFSDIR=boot
-NEWBOOTFSDIR=boot
-DLTMP=download-tmp
+source configs/installerconfigs.sh
+source configs/userconfigs.sh
 
 source scripts/workdir.sh
 source scripts/general.sh
@@ -30,6 +26,9 @@ then
 	exit 100
 fi
 echo "continuing.."
+
+#check if diskdevice is mmc or nvme and set partitions
+check-nvme-mmc "${DISKDEVICE}"
 
 #setup workdirs
 setup-workdir "${WORKDIR}"
@@ -62,7 +61,7 @@ fi
 sync
 
 #get rootfs tarball
-get-file "${WORKDIR}" "http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
+get-file "${WORKDIR}" "${ROOTFS_URL}"
 if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
@@ -71,7 +70,7 @@ fi
 sync
 
 #unpack rootfs tarball
-unpack-rootfs "${WORKDIR}" "${WORKDIR}/${DLTMP}/ArchLinuxARM-aarch64-latest.tar.gz"
+unpack-rootfs "${WORKDIR}" "${WORKDIR}/${DLTMP}/${ROOTFS_TARBALL}"
 if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
@@ -89,7 +88,7 @@ fi
 sync
 
 #set locale
-set-locale "${WORKDIR}" "en_US.UTF-8"
+set-locale "${WORKDIR}" "${INSTALL_LOCALE}" "${INSTALL_LOCALE_ENC}"
 if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
@@ -98,27 +97,31 @@ fi
 sync
 
 #get required files
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-keyring-20230818-1-any.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
+if [ "${SETUP_BREDOS}" = "yes" ]
 then
-	echo "ERROR! aborting..."
-	exit 9
-fi
-sync
+	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-keyring-20230818-1-any.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 9
+	fi
+	sync
 
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
-then
-	echo "ERROR! aborting..."
-	exit 9
-fi
-sync
+	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 9
+	fi
+	sync
 
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
-then
-	echo "ERROR! aborting..."
-	exit 9
+	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 9
+	fi
+	sync
 fi
 sync
 
@@ -172,35 +175,43 @@ then
 fi
 sync
 
-pac-install-local "${WORKDIR}" "bredos-keyring-20230818-1-any.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
+#install bredos repo if specified
+if [ "${SETUP_BREDOS}" = "yes" ]
 then
-	echo "ERROR! aborting..."
-	exit 11
-fi
-sync
+	echo "installing BredOS repo"
+	pac-install-local "${WORKDIR}" "bredos-keyring-20230818-1-any.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 11
+	fi
+	sync
 
-pac-install-local "${WORKDIR}" "bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
-then
-	echo "ERROR! aborting..."
-	exit 11
-fi
-sync
+	pac-install-local "${WORKDIR}" "bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 11
+	fi
+	sync
 
-pac-install-local "${WORKDIR}" "pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
-if [ "${?}" -ne "0" ]
-then
-	echo "ERROR! aborting..."
-	exit 11
-fi
-sync
+	pac-install-local "${WORKDIR}" "pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 11
+	fi
+	sync
 
-pac-update "${WORKDIR}"
-if [ "${?}" -ne "0" ]
-then
-	echo "ERROR! aborting..."
-	exit 11
+	pac-update "${WORKDIR}"
+	if [ "${?}" -ne "0" ]
+	then
+		echo "ERROR! aborting..."
+		exit 11
+	fi
+	sync
+else
+	echo "Not installing BredOS repo"
 fi
 sync
 
@@ -254,7 +265,40 @@ then
 fi
 sync
 
-install-grub "${WORKDIR}" "${DISKDEVICE}"
+install-grub "${WORKDIR}"
+if [ "${?}" -ne "0" ]
+then
+	echo "ERROR! aborting..."
+	exit 13
+fi
+sync
+
+grub-config-gen >> "${WORKDIR}/${ROOTFSDIR}/etc/grub.d/40_custom"
+if [ "${?}" -ne "0" ]
+then
+	echo "ERROR! aborting..."
+	exit 13
+fi
+sync
+
+set-grub-default "${GRUBENTRY}"
+if [ "${?}" -ne "0" ]
+then
+	echo "ERROR! aborting..."
+	exit 13
+fi
+sync
+
+
+mkconfig-grub "${WORKDIR}"
+if [ "${?}" -ne "0" ]
+then
+	echo "ERROR! aborting..."
+	exit 13
+fi
+sync
+
+umount-dltmp "${WORKDIR}"
 if [ "${?}" -ne "0" ]
 then
 	echo "ERROR! aborting..."
@@ -269,6 +313,9 @@ then
 	exit 13
 fi
 sync
+
+#User code gets hooked here after system install
+source scripts/usercode.sh
 
 #wrap up
 unmount-workdirs "${WORKDIR}"

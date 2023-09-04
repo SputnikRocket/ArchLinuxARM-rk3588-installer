@@ -55,8 +55,8 @@ function unpack-rootfs() {
 	fi
 	sync
 
-	echo "Moving boot files to ${WORKDIR}/${ROOTFSDIR}/${NEWBOOTFSDIR}"
-	mv ${WORKDIR}/${ROOTFSDIR}/${NEWBOOTFSDIR}/* ${WORKDIR}/${BOOTFSDIR}/
+	echo "Moving boot files to ${WORKDIR}/${NEWBOOTFSDIR}"
+	mv ${WORKDIR}/${NEWBOOTFSDIR}/* ${WORKDIR}/${BOOTFSDIR}/
 	if [ "${?}" -ne "0" ]
 	then
 		sync
@@ -72,6 +72,7 @@ function set-locale() {
 	
 	local WORKDIR=${1}
 	local SETLOCALE=${2}
+	local ENCODING=${3}
 	
 	echo "setting installation locale..."
 	echo "LANG=${SETLOCALE}" > "${WORKDIR}/${ROOTFSDIR}/etc/locale.conf"
@@ -80,7 +81,7 @@ function set-locale() {
 		return 1
 	fi
 	
-	echo "${SETLOCALE} UTF-8" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
+	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
 	if [ "${?}" -ne "0" ]
 	then
 		return 1

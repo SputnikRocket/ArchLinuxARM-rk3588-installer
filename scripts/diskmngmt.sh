@@ -39,16 +39,16 @@ function setup-disk() {
 	fi
 	sync
 
-	echo "Formatting ${DISKDEVICE}1 as fat32"
-	yes | mkfs.vfat -F 32 "${DISKDEVICE}1"
+	echo "Formatting ${DISKPART1} as fat32"
+	yes | mkfs.vfat -F 32 "${DISKPART1}"
 	if [ "${?}" -ne "0" ]
 	then
 		return 1
 	fi
 	sync
 
-	echo "Formatting ${DISKDEVICE}2 as ext4"
-	yes | mkfs.ext4 "${DISKDEVICE}2"
+	echo "Formatting ${DISKPART2} as ext4"
+	yes | mkfs.ext4 "${DISKPART2}"
 	if [ "${?}" -ne "0" ]
 	then
 		return 1
@@ -65,7 +65,7 @@ function mount-working-disks() {
 	local DISKDEVICE=${2}
 	
 	echo "mounting installation device..."
-	mount "${DISKDEVICE}1" "${WORKDIR}/${BOOTFSDIR}"
+	mount "${DISKPART1}" "${WORKDIR}/${BOOTFSDIR}"
 	if [ "${?}" -ne "0" ]
 	then
 		sync
@@ -73,7 +73,7 @@ function mount-working-disks() {
 	fi
 	sync
 	
-	mount "${DISKDEVICE}2" "${WORKDIR}/${ROOTFSDIR}"
+	mount "${DISKPART2}" "${WORKDIR}/${ROOTFSDIR}"
 	if [ "${?}" -ne "0" ]
 	then
 		sync
@@ -91,7 +91,7 @@ function remount-bootfs() {
 	local DISKDEVICE=${2}
 	
 	echo "remounting bootfs..."
-	umount -f "${DISKDEVICE}1"
+	umount -f "${DISKPART1}"
 	if [ "${?}" -ne "0" ]
 	then
 		sync
@@ -99,7 +99,24 @@ function remount-bootfs() {
 	fi
 	sync
 	
-	mount "${DISKDEVICE}1" "${WORKDIR}/${ROOTFSDIR}/${NEWBOOTFSDIR}"
+	mount "${DISKPART1}" "${WORKDIR}/${NEWBOOTFSDIR}"
+	if [ "${?}" -ne "0" ]
+	then
+		sync
+		return 1
+	else
+		sync
+		return 0
+	fi
+}
+
+#unmount dltmp
+function umount-dltmp() {
+	
+	local WORKDIR=${1}
+	
+	sync
+	umount -f "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
 	if [ "${?}" -ne "0" ]
 	then
 		sync
@@ -125,5 +142,20 @@ function unmount-workdirs() {
 	else
 		sync
 		return 0
+	fi
+}
+
+#checks if install disk is nvme or mmc
+function check-nvme-mmc() {
+	
+	local DISKDEVICE=${1}
+	
+	if [[ "${DISKDEVICE}" = *"nvme"* ]] || [[ "${DISKDEVICE}" = *"mmc"* ]]
+	then 
+		DISKPART1="${DISKDEVICE}p1"
+		DISKPART2="${DISKDEVICE}p2"
+	else
+		DISKPART1="${DISKDEVICE}1"
+		DISKPART2="${DISKDEVICE}2"
 	fi
 }
