@@ -140,14 +140,10 @@ sync
 install-grub "${WORKDIR}"
 sync
 
-grub-config-gen >> "${WORKDIR}/${ROOTFSDIR}/etc/grub.d/40_custom"
-sync
-
-set-grub-default "${GRUBENTRY}"
-sync
-
-
 mkconfig-grub "${WORKDIR}"
+sync
+
+insert-dtb-grub "${WORKDIR}"
 sync
 
 umount-dltmp "${WORKDIR}"
