@@ -48,4 +48,21 @@ function pac-remove() {
 	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -Rn "${PACKAGE}"  --noconfirm
 }
 
+#pacman -Syyu
+function pac-upgrade() {
+	
+	local WORKDIR=${1}
+	
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -Syyu --noconfirm
+}
+
+#pacman -Scc
+function pac-clean() {
+	
+	local WORKDIR=${1}
+	
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -Scc --noconfirm
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/cache/pacman/pkg/*
+}
+
 
