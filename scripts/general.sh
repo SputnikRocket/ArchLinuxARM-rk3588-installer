@@ -77,3 +77,15 @@ function mkfstab() {
 	echo "generating fstab..."
 	genfstab -U "${WORKDIR}/${ROOTFSDIR}" > "${WORKDIR}/${ROOTFSDIR}/etc/fstab"
 }
+
+#clean possibly sensitive directories
+function clean-configs() {
+	
+	local WORKDIR=${1}
+	
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/*
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/.??*
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/log/pacman.log
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/lib/pacman/sync/*
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/${DLTMP}
+}
