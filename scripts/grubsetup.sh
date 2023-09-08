@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -eE 
+trap 'echo Error: in $0 on line $LINENO' ERR
+
 #install grub
 function install-grub() {
 	
@@ -7,12 +10,6 @@ function install-grub() {
 	
 	echo "installing grub to ${DISKPART1}..."
 	arch-chroot "${WORKDIR}/${ROOTFSDIR}" grub-install "${DISKPART1}" --efi-directory="/${EFIDIR}" --removable
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi
 }
 
 #Grub config generator
@@ -38,12 +35,6 @@ function grub-config-gen() {
 	initrd	/${INITRAMFSPATH}
 }
 """
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi
 }
 
 #generate main grub config
@@ -52,12 +43,6 @@ function mkconfig-grub() {
 	local WORKDIR=${1}
 	
 	arch-chroot "${WORKDIR}/${ROOTFSDIR}" grub-mkconfig -o "/${EFIDIR}/grub/grub.cfg"
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi
 }
 
 #set ours as default menu entry
@@ -66,10 +51,4 @@ function set-grub-default() {
 	local ENTRY=${1}
 	
 	echo "GRUB_DEFAULT=${ENTRY}" >> "${WORKDIR}/${ROOTFSDIR}/etc/default/grub"
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi
 }

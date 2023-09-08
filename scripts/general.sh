@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -eE 
+trap 'echo Error: in $0 on line $LINENO' ERR
+
 #check if specified file exists or not
 function check-if-exists() {
 
@@ -22,22 +25,9 @@ function get-file() {
 	
 	echo "getting file from ${URL}..."
 	cd ${WORKDIR}/${DLTMP}
-	if [ "${?}" -ne "0" ]
-	then
-		echo "failed to change directory!"
-		return 1
-	fi
     
 	aria2c ${URL}
-	if [ "${?}" -ne "0" ]
-	then
-		echo "failed to get file!"
-		cd ../../
-		return 1
-	else
-		cd ../../
-		return 0
-	fi
+	cd ../../
 }
 
 #unpack rootfs to wordir
@@ -48,23 +38,11 @@ function unpack-rootfs() {
 	
 	echo "Extracting rootfs to ${WORKDIR}/${ROOTFSDIR}..."
 	bsdtar -xpf "${TARBALL}" -C "${WORKDIR}/${ROOTFSDIR}"
-	if [ "${?}" -ne "0" ]
-	then
-	    sync
-		return 1
-	fi
 	sync
 
 	echo "Moving boot files to ${WORKDIR}/${NEWBOOTFSDIR}"
 	mv ${WORKDIR}/${NEWBOOTFSDIR}/* ${WORKDIR}/${BOOTFSDIR}/
-	if [ "${?}" -ne "0" ]
-	then
-		sync
-		return 1
-	else
-		sync
-		return 0
-	fi
+	sync
 }
 	
 #set locale
@@ -76,24 +54,10 @@ function set-locale() {
 	
 	echo "setting installation locale..."
 	echo "LANG=${SETLOCALE}" > "${WORKDIR}/${ROOTFSDIR}/etc/locale.conf"
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	fi
 	
 	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	fi
 	
 	arch-chroot "${WORKDIR}/${ROOTFSDIR}" locale-gen
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi	
 }
 
 #mkinitcpio update
@@ -102,15 +66,7 @@ function setup-mkinitcpio() {
 	local WORKDIR=${1}
 	
 	echo "generating initramfs..."
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" mkinitcpio -P
-	if [ "${?}" -ne "0" ]
-	then
-		sync
-		return 1
-	else
-		sync
-		return 0
-	fi	
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" mkinitcpio -P	
 }
 
 #make fstab
@@ -120,10 +76,4 @@ function mkfstab() {
 	
 	echo "generating fstab..."
 	genfstab -U "${WORKDIR}/${ROOTFSDIR}" > "${WORKDIR}/${ROOTFSDIR}/etc/fstab"
-	if [ "${?}" -ne "0" ]
-	then
-		return 1
-	else
-		return 0
-	fi
 }
