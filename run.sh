@@ -163,6 +163,9 @@ source scripts/usercode.sh
 pac-clean "${WORKDIR}"
 sync
 
+clean-configs "${WORKDIR}"
+sync
+
 #wrap up
 unmount-workdirs "${WORKDIR}"
 sync
