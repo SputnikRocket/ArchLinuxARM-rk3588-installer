@@ -129,6 +129,10 @@ sync
 setup-mkinitcpio "${WORKDIR}"
 sync
 
+#upgrade software
+pac-upgrade "${WORKDIR}"
+sync
+
 #install grub
 pac-install "${WORKDIR}" "grub"
 sync
@@ -154,6 +158,10 @@ sync
 
 #User code gets hooked here after system install
 source scripts/usercode.sh
+
+#clean up installation
+pac-clean "${WORKDIR}"
+sync
 
 #wrap up
 unmount-workdirs "${WORKDIR}"
