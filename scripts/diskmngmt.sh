@@ -18,11 +18,11 @@ function setup-disk() {
 	sgdisk -o "${DISKDEVICE}"
 	sync
 
-	echo "Creating partition of type 'EFI System Partition' on ${DISKDEVICE}1"
+	echo "Creating partition of type 'EFI System Partition' on ${DISKPART1}"
 	sgdisk -n 1:+20M:+512M -t 1:ef00 -c 1:"ARCH_BOOT" "${DISKDEVICE}"
 	sync
 
-	echo "Creating partition of type 'Linux Filesystem' on ${DISKDEVICE}2"
+	echo "Creating partition of type 'Linux Filesystem' on ${DISKPART2}"
 	sgdisk -n 2:0:0 -t 2:8300 -c 2:"ARCH_ROOT" "${DISKDEVICE}"
 	sync
 
