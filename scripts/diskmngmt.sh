@@ -23,7 +23,7 @@ function setup-disk() {
 	sync
 
 	echo "Creating partition of type 'Linux Filesystem' on ${DISKDEVICE}2"
-	sgdisk -n 2:+4M:-20M -t 2:8300 -c 2:"ARCH_ROOT" "${DISKDEVICE}"
+	sgdisk -n 2:0:0 -t 2:8300 -c 2:"ARCH_ROOT" "${DISKDEVICE}"
 	sync
 
 	echo "Formatting ${DISKPART1} as fat32"
