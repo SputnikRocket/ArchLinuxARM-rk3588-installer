@@ -73,9 +73,15 @@ function setup-mkinitcpio() {
 function mkfstab() {
 	
 	local WORKDIR=${1}
+	BOOTFSTABUUID=$(echo "${BOOTUUID^^}" | sed 's/./&-/4')
+	ROOTFSTABUUID=${ROOTUUID,,}
 	
 	echo "generating fstab..."
-	genfstab -U "${WORKDIR}/${ROOTFSDIR}" > "${WORKDIR}/${ROOTFSDIR}/etc/fstab"
+	rm ${WORKDIR}/${ROOTFSDIR}/etc/fstab
+	echo "# <file system>     <mount point>  <type>  <options>   <dump>  <fsck>" >>  ${WORKDIR}/${ROOTFSDIR}/etc/fstab
+	echo "UUID=${BOOTFSTABUUID}	/boot	vfat	defaults	0	2" >> ${WORKDIR}/${ROOTFSDIR}/etc/fstab
+	echo "UUID=${ROOTFSTABUUID}	/	ext4	defaults	0	1" >> ${WORKDIR}/${ROOTFSDIR}/etc/fstab
+	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/fstab
 }
 
 #clean possibly sensitive directories

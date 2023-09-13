@@ -27,11 +27,11 @@ function setup-disk() {
 	sync
 
 	echo "Formatting ${DISKPART1} as fat32"
-	yes | mkfs.vfat -F 32 "${DISKPART1}"
+	yes | mkfs.vfat -i "${BOOTUUID}" -F 32 "${DISKPART1}"
 	sync
 
 	echo "Formatting ${DISKPART2} as ext4"
-	yes | mkfs.ext4 "${DISKPART2}"
+	yes | mkfs.ext4 -U "${ROOTUUID}" "${DISKPART2}"
 	sync
 }
 
@@ -97,4 +97,11 @@ function check-nvme-mmc() {
 		DISKPART1="${DISKDEVICE}1"
 		DISKPART2="${DISKDEVICE}2"
 	fi
+}
+
+#set UUIDS for partitions
+function set-partuuids() {
+	
+	BOOTUUID=$(uuidgen | head -c8)
+	ROOTUUID=$(uuidgen)
 }

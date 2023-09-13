@@ -25,6 +25,9 @@ then
 fi
 echo "continuing.."
 
+#set partuuids for rest of installer
+set-partuuids
+
 #check if diskdevice is mmc or nvme and set partitions
 check-nvme-mmc "${DISKDEVICE}"
 
