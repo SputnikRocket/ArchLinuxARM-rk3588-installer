@@ -3,8 +3,8 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-#format disks for install
-function setup-disk() {
+#regenerate gpt
+function regen-gpt() {
 
 	local DISKDEVICE=${1}
     
@@ -17,7 +17,15 @@ function setup-disk() {
 	echo "Creating new partition table on ${DISKDEVICE}"
 	sgdisk -o "${DISKDEVICE}"
 	sync
+}
 
+#create partitions
+function mk-parts() {
+	
+	local DISKDEVICE=${1}
+	
+	sync
+	
 	echo "Creating partition of type 'EFI System Partition' on ${DISKPART1}"
 	sgdisk -n 1:+20M:+512M -t 1:ef00 -c 1:"ARCH_BOOT" "${DISKDEVICE}"
 	sync

@@ -5,6 +5,7 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 
 source configs/installerconfigs.sh
 source configs/userconfigs.sh
+source configs/boards.sh
 
 source scripts/workdir.sh
 source scripts/general.sh
@@ -14,8 +15,15 @@ source scripts/grubsetup.sh
 
 source runscripts/inputhandler.sh
 
+#setup workdirs
+setup-workdir "${WORKDIR}"
+sync
+
 #setup disk
-setup-disk "${DISKDEVICE}"
+regen-gpt "${DISKDEVICE}"
+sync
+
+mk-parts "${DISKDEVICE}"
 sync
 
 #hack to make mount not spam fstab change messages
