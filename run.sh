@@ -12,28 +12,7 @@ source scripts/diskmngmt.sh
 source scripts/pacman.sh
 source scripts/grubsetup.sh
 
-#Check if specified device exists
-check-if-exists "${DISKDEVICE}"
-sync
-
-#are you sure?
-read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
-if [[ ${CONTINUE} != [Yy]* ]]
-then
-	echo "Abort!"
-	exit 100
-fi
-echo "continuing.."
-
-#set partuuids for rest of installer
-set-partuuids
-
-#check if diskdevice is mmc or nvme and set partitions
-check-nvme-mmc "${DISKDEVICE}"
-
-#setup workdirs
-setup-workdir "${WORKDIR}"
-sync
+source runscripts/inputhandler.sh
 
 #setup disk
 setup-disk "${DISKDEVICE}"

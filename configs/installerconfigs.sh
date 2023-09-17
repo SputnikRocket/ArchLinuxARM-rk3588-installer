@@ -3,9 +3,6 @@
 #Installer variables get se here.
 #Unless you know what you are doing, DO NOT modify these.
 
-#Disk device
-DISKDEVICE=${1}
-
 #Working directory stuff
 WORKDIR="workdir"
 ROOTFSDIR="root"
@@ -33,5 +30,5 @@ DTB_NANOPC_T6="dtbs/rockchip/rk3588-nanopc-t6.dtb"
 DTB_BLADE3="dtbs/rockchip/rk3588-blade3-v101-linux.dtb"
 DTB_IDNOVA="dtbs/rockchip/rk3588s-9tripod-linux.dtb"
 
-#grub entry
-GRUBENTRY="3"
+#image filename prefixes
+IMGPREFIX="ArchLinuxARM"
