@@ -34,7 +34,7 @@ function config-rock-5a {
 }
 
 #Rock 5B
-function config-rock5b {
+function config-rock-5b {
 	
 	DEVICETREE="$DTB_ROCK5B"
 	IMAGEFILE="${IMGPREFIX}-Rock_5B-${PROFILE}-UEFI.img"
