@@ -48,6 +48,11 @@ sync
 pac-upgrade "${WORKDIR}"
 sync
 
+#install extra software
+pac-install "${WORKDIR}" "gptfdisk"
+pac-install "${WORKDIR}" "parted"
+sync
+
 #install grub
 pac-install "${WORKDIR}" "grub"
 sync

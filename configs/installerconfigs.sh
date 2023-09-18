@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -eE 
+trap 'echo Error: in $0 on line $LINENO' ERR
+
 #Installer variables get se here.
 #Unless you know what you are doing, DO NOT modify these.
 
@@ -9,6 +12,8 @@ ROOTFSDIR="root"
 BOOTFSDIR="boot"
 NEWBOOTFSDIR="root/boot"
 DLTMP="download-tmp"
+OVERLAYDIR="overlays"
+PROFILEDIR="profiles"
 
 #Rootfs
 ROOTFS_URL="http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"

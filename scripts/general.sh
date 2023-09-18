@@ -94,4 +94,31 @@ function clean-configs() {
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/log/pacman.log
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/lib/pacman/sync/*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/${DLTMP}
+	rm -rf ${WORKDIR}/${NEWBOOTFSDIR}/grub/grub2.cfg
+}
+
+#enable a systemd service
+function systemd-enable() {
+	
+	local WORKDIR=${1}
+	local UNIT=${2}
+	
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" systemctl enable ${UNIT}
+}
+
+#apply overlay
+function apply-overlay() {
+	
+	local WORKDIR=${1}
+	local OVERLAY=${2}
+	
+	cp -rf ${OVERLAYDIR}/overlay.${OVERLAY}/* ${WORKDIR}/${ROOTFSDIR}/
+} 
+
+#install profile
+function install-profile() {
+	
+	local PROFILE=${1}
+	
+	source ${PROFILEDIR}/${PROFILE}.profile/install.sh
 }

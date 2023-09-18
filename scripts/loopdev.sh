@@ -38,7 +38,7 @@ function attach-loop() {
 function compress-image() {
 	
 	sync
-	xz -3 --force --keep --quiet --threads=0 "${OUTDIR}/${IMAGEFILE}"
+	xz -3 --force --keep --verbose --threads=0 "${OUTDIR}/${IMAGEFILE}"
 	sync
 }
 
