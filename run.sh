@@ -12,152 +12,41 @@ source scripts/general.sh
 source scripts/diskmngmt.sh
 source scripts/pacman.sh
 source scripts/grubsetup.sh
+source scripts/loopdev.sh
 
 source runscripts/inputhandler.sh
 
-#setup workdirs
-setup-workdir "${WORKDIR}"
+#prepare work and download files
+source runscripts/prepdownload.sh
+sync
+
+#if create loop is true, create and attach loop
+if [[ ${IMGBUILD} = "True" ]]
+then
+	source runscripts/createloop.sh
+fi
 sync
 
 #setup disk
-regen-gpt "${DISKDEVICE}"
+source runscripts/setupdisk.sh
 sync
 
-mk-parts "${DISKDEVICE}"
+#base installation
+source runscripts/setupbase.sh
 sync
-
-#hack to make mount not spam fstab change messages
-systemctl daemon-reload
-
-#mount disk to workdirs
-mount-working-disks "${WORKDIR}" "${DISKDEVICE}"
-sync
-
-#get rootfs tarball
-get-file "${WORKDIR}" "${ROOTFS_URL}"
-sync
-
-#unpack rootfs tarball
-unpack-rootfs "${WORKDIR}" "${WORKDIR}/${DLTMP}/${ROOTFS_TARBALL}"
-sync
-
-#remount boot
-remount-bootfs "${WORKDIR}" "${DISKDEVICE}"
-sync
-
-#set locale
-set-locale "${WORKDIR}" "${INSTALL_LOCALE}" "${INSTALL_LOCALE_ENC}"
-sync
-
-#get required files
-if [ "${SETUP_BREDOS}" = "yes" ]
-then
-	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-keyring-20230818-1-any.pkg.tar.xz"
-	sync
-
-	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
-	sync
-
-	get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
-	sync
-fi
-sync
-
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-image-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.zst"
-sync
-
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-rockchip-rk3588-mkinitcpio-1.0.0-1-aarch64.pkg.tar.xz"
-sync
-
-get-file "${WORKDIR}" "https://github.com/SputnikRocket/archlinuxarm-rk3588-pkgs/releases/download/latest/linux-dtbs-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.xz"
-sync
-
-#mount tmp downloads
-mount-dltmp "${WORKDIR}"
-sync
-
-#initialize pacman
-pac-init "${WORKDIR}"
-sync
-
-pac-update "${WORKDIR}"
-sync
-
-#install bredos repo if specified
-if [ "${SETUP_BREDOS}" = "yes" ]
-then
-	echo "installing BredOS repo"
-	pac-install-local "${WORKDIR}" "bredos-keyring-20230818-1-any.pkg.tar.xz"
-	sync
-
-	pac-install-local "${WORKDIR}" "bredos-mirrorlist-20230818-1-any.pkg.tar.xz"
-	sync
-
-	pac-install-local "${WORKDIR}" "pacman-bredos-conf-1.0.0-1-aarch64.pkg.tar.xz"
-	sync
-
-	pac-update "${WORKDIR}"
-	sync
-else
-	echo "Not installing BredOS repo"
-fi
-sync
-
-#setup kernel
-pac-remove "${WORKDIR}" "linux-aarch64"
-sync
-
-pac-install-local "${WORKDIR}" "linux-image-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.zst"
-sync
-
-pac-install-local "${WORKDIR}" "linux-rockchip-rk3588-mkinitcpio-1.0.0-1-aarch64.pkg.tar.xz"
-sync
-
-pac-install-local "${WORKDIR}" "linux-dtbs-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.xz"
-sync
-
-setup-mkinitcpio "${WORKDIR}"
-sync
-
-#upgrade software
-pac-upgrade "${WORKDIR}"
-sync
-
-#install grub
-pac-install "${WORKDIR}" "grub"
-sync
-
-install-grub "${WORKDIR}"
-sync
-
-mkconfig-grub "${WORKDIR}"
-sync
-
-insert-dtb-grub "${WORKDIR}"
-sync
-
-umount-dltmp "${WORKDIR}"
-sync
-
-mkfstab "${WORKDIR}"
-sync
-
-#User code gets hooked here after system install
-source scripts/usercode.sh
 
 #clean up installation
-pac-clean "${WORKDIR}"
-sync
+source runscripts/cleaninstall.sh
 
-clean-configs "${WORKDIR}"
-sync
-
-#wrap up
-unmount-workdirs "${WORKDIR}"
-sync
-
-clean-workdir "${WORKDIR}"
-sync
+#unmount disks and clean workdirs or wrap up loopdev
+if [[ ${IMGBUILD} == "True" ]]
+then
+	source runscripts/wrapuploop.sh
+	
+elif [[ ${IMGBUILD} == "False" ]]
+then
+	source runscripts/wrapupdisk.sh
+fi
 
 echo "success! you may now remove ${DISKDEVICE}"
 exit 0

@@ -32,3 +32,4 @@ DTB_IDNOVA="dtbs/rockchip/rk3588s-9tripod-linux.dtb"
 
 #image filename prefixes
 IMGPREFIX="ArchLinuxARM"
+OUTDIR="outputs"

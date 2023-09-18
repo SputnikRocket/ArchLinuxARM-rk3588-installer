@@ -15,15 +15,6 @@ then
 	echo "Error: DISKDEVICE is not set"
     exit 1
 fi
-
-#are you sure?
-read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
-if [[ ${CONTINUE} != [Yy]* ]]
-then
-	echo "Abort!"
-	exit 100
-fi
-echo "continuing.."
 sleep 0.5
 
 #check if BOARD is specified, if not, display chooser
@@ -59,7 +50,7 @@ then
 fi
 
 #set PROFILE based off of script arguments or interactive input
-if [[ ${PROFILEINDEX} = "1" ]] || [[ ${PROFILE} = "minimal" ]]
+if [[ ${PROFILEINDEX} == "1" ]] || [[ ${PROFILE} = "minimal" ]]
 then
 	PROFILE="minimal"
 	
@@ -70,47 +61,47 @@ else
 fi
 	
 #set BOARD config based off of script arguments or interactive input	
-if [[ ${BOARDINDEX} = "1" ]] || [[ ${BOARD} = "orangepi-5plus" ]]
+if [[ ${BOARDINDEX} == "1" ]] || [[ ${BOARD} = "orangepi-5plus" ]]
 then
 	config-orangepi-5plus
 
-elif  [[ ${BOARDINDEX} = "2" ]] || [[ ${BOARD} = "orangepi-5" ]]
+elif  [[ ${BOARDINDEX} == "2" ]] || [[ ${BOARD} = "orangepi-5" ]]
 then
 	config-orangepi-5
 
-elif  [[ ${BOARDINDEX} = "3" ]] || [[ ${BOARD} = "orangepi-5b" ]]
+elif  [[ ${BOARDINDEX} == "3" ]] || [[ ${BOARD} = "orangepi-5b" ]]
 then
 	config-orangepi-5b
 	
-elif  [[ ${BOARDINDEX} = "4" ]] || [[ ${BOARD} = "rock-5a" ]]
+elif  [[ ${BOARDINDEX} == "4" ]] || [[ ${BOARD} = "rock-5a" ]]
 then
 	config-rock-5a
 	
-elif  [[ ${BOARDINDEX} = "5" ]] || [[ ${BOARD} = "rock-5b" ]]
+elif  [[ ${BOARDINDEX} == "5" ]] || [[ ${BOARD} = "rock-5b" ]]
 then
 	config-rock-5b
 	
-elif  [[ ${BOARDINDEX} = "6" ]] || [[ ${BOARD} = "indiedroid-nova" ]]
+elif  [[ ${BOARDINDEX} == "6" ]] || [[ ${BOARD} = "indiedroid-nova" ]]
 then
 	config-indiedroid-nova
 	
-elif  [[ ${BOARDINDEX} = "7" ]] || [[ ${BOARD} = "nanopi-r6c" ]]
+elif  [[ ${BOARDINDEX} == "7" ]] || [[ ${BOARD} = "nanopi-r6c" ]]
 then
 	config-nanopi-r6c
 	
-elif  [[ ${BOARDINDEX} = "8" ]] || [[ ${BOARD} = "nanopi-r6s" ]]
+elif  [[ ${BOARDINDEX} == "8" ]] || [[ ${BOARD} = "nanopi-r6s" ]]
 then
 	config-nanopi-r6s
 	
-elif  [[ ${BOARDINDEX} = "9" ]] || [[ ${BOARD} = "nanopc-t6" ]]
+elif  [[ ${BOARDINDEX} == "9" ]] || [[ ${BOARD} = "nanopc-t6" ]]
 then
 	config-nanopc-t6
 	
-elif  [[ ${BOARDINDEX} = "10" ]] || [[ ${BOARD} = "khadas-edge2" ]]
+elif  [[ ${BOARDINDEX} == "10" ]] || [[ ${BOARD} = "khadas-edge2" ]]
 then
 	config-khadas-edge2
 	
-elif  [[ ${BOARDINDEX} = "11" ]] || [[ ${BOARD} = "mixtile-blade3" ]]
+elif  [[ ${BOARDINDEX} == "11" ]] || [[ ${BOARD} = "mixtile-blade3" ]]
 then
 	config-mixtile-blade3
 	
@@ -125,7 +116,7 @@ if [[ -z ${BUILDIMAGE} ]]
 then
 	IMGBUILD="False"
 
-elif [[ ${BUILDIMAGE} = "img" ]]
+elif [[ ${BUILDIMAGE} == "img" ]]
 then
 	IMGBUILD="True"
 
@@ -134,6 +125,19 @@ else
 	exit 1
 
 fi
+
+#check if user really wants to do this ONLY if he does not want to build an image
+if [[ ${IMGBUILD} = "False" ]]
+then
+	#are you sure?
+	read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
+	if [[ ${CONTINUE} != [Yy]* ]]
+	then
+		echo "Abort!"
+		exit 100
+	fi
+fi
+echo "continuing.."
 
 #Check if specified device exists
 check-if-exists "${DISKDEVICE}"
