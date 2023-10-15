@@ -27,7 +27,7 @@ function pac-install() {
 	local WORKDIR=${1}
 	local PACKAGE=${2}
 	
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -S "${PACKAGE}"  --noconfirm
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -S "${PACKAGE}"  --noconfirm --overwrite \* --disable-download-timeout
 }
 
 #pacman -U
@@ -65,4 +65,11 @@ function pac-clean() {
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/cache/pacman/pkg/*
 }
 
-
+#pacman -Rdd
+function pac-forceremove() {
+	
+	local WORKDIR=${1}
+	local PACKAGE=${2}
+	
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" pacman -Rdd "${PACKAGE}"  --noconfirm
+}

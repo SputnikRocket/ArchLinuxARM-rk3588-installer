@@ -4,6 +4,10 @@ set -eE
 trap 'echo Error: in $0 on line $LINENO' ERR
 
 #remove disk image, compress and generate checksum
+umount-dltmp "${WORKDIR}"
+source runscripts/cleaninstall.sh
+sync
+
 unmount-workdirs "${WORKDIR}"
 sync
 

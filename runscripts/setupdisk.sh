@@ -5,10 +5,16 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 
 #setup disk partitioning
 
-#setup disk
+#regenerate gpt
 regen-gpt "${DISKDEVICE}"
 sync
 
+#install uefi to disk
+#get-file "${WORKDIR}" "${UEFI_URL}"
+#efi-install "${WORKDIR}" "${DISKDEVICE}" "${UEFI_FILE}"
+#sync 
+
+#make partitions
 mk-parts "${DISKDEVICE}"
 sync
 

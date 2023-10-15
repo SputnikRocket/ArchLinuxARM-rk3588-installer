@@ -26,6 +26,9 @@ function mk-parts() {
 	
 	sync
 	
+	sgdisk -e "${DISKDEVICE}"
+	sync
+	
 	echo "Creating partition of type 'EFI System Partition' on ${DISKPART1}"
 	sgdisk -n 1:+20M:+512M -t 1:ef00 -c 1:"ARCH_BOOT" "${DISKDEVICE}"
 	sync

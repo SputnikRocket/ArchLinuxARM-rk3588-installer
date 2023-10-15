@@ -21,6 +21,12 @@ sync
 mount-dltmp "${WORKDIR}"
 sync
 
+#apply minimal overlay for multi-threaded downloads
+check-if-exists "${OVERLAYDIR}/overlay.minimal"
+
+apply-overlay "${WORKDIR}" "minimal"
+sync
+
 #initialize pacman
 pac-init "${WORKDIR}"
 sync
@@ -62,11 +68,10 @@ sync
 
 mkconfig-grub "${WORKDIR}"
 sync
-
-insert-dtb-grub "${WORKDIR}"
-sync
-
-umount-dltmp "${WORKDIR}"
+if [[ "${DEVICETREE}" != "None" ]]
+then
+	insert-dtb-grub "${WORKDIR}"
+fi
 sync
 
 mkfstab "${WORKDIR}"

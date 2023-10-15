@@ -122,3 +122,15 @@ function install-profile() {
 	
 	source ${PROFILEDIR}/${PROFILE}.profile/install.sh
 }
+
+#install efi ffirmware (DOESNT WORK YET)
+function efi-install() {
+	
+	local WORKDIR=${1}
+	local DISKDEVICE=${2}
+	local UEFI_FILE=${3}
+	
+	sync
+	dd if=${WORKDIR}/${DLTMP}/${UEFI_FILE} of=${DISKDEVICE} bs=512 skip=64 seek=64 status=progress
+	sync
+}

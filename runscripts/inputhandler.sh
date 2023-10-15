@@ -34,6 +34,8 @@ then
 	echo " 9. NanoPC T6"
 	echo " 10. Khadas Edge 2"
 	echo " 11. Mixtile Blade 3"
+	echo """ 12. None (only if you want to use devicetrees
+ built into uefi or want to configure your own)"""
 	echo "---------------------"
 	read -p "Board: " BOARDINDEX
 fi
@@ -45,6 +47,7 @@ then
 	echo "Choose which profile to use for installation by entering it's number below"
 	echo "---------------------"
 	echo " 1. minimal"
+	echo " 2. xfce"
 	echo "---------------------"
 	read -p "Profile: " PROFILEINDEX
 fi
@@ -53,6 +56,10 @@ fi
 if [[ ${PROFILEINDEX} == "1" ]] || [[ ${PROFILE} = "minimal" ]]
 then
 	PROFILE="minimal"
+	
+elif [[ ${PROFILEINDEX} == "2" ]] || [[ ${PROFILE} = "xfce" ]]
+then
+	PROFILE="xfce"
 	
 else
 	echo "not a valid choice! exiting..."
@@ -104,6 +111,10 @@ then
 elif  [[ ${BOARDINDEX} == "11" ]] || [[ ${BOARD} = "mixtile-blade3" ]]
 then
 	config-mixtile-blade3
+	
+elif  [[ ${BOARDINDEX} == "12" ]] || [[ ${BOARD} = "none" ]]
+then
+	config-none
 	
 else
 	echo "not a valid choice! exiting..."

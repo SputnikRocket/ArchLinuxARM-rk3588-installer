@@ -39,10 +39,6 @@ sync
 source runscripts/applyprofiles.sh
 sync
 
-#clean up installation
-source runscripts/cleaninstall.sh
-sync
-
 #unmount disks and clean workdirs or wrap up loopdev
 if [[ ${IMGBUILD} == "True" ]]
 then
