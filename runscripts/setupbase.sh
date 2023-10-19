@@ -38,16 +38,7 @@ sync
 pac-remove "${WORKDIR}" "linux-aarch64"
 sync
 
-pac-install-local "${WORKDIR}" "linux-image-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.zst"
-sync
-
-pac-install-local "${WORKDIR}" "linux-rockchip-rk3588-mkinitcpio-1.0.0-1-aarch64.pkg.tar.xz"
-sync
-
-pac-install-local "${WORKDIR}" "linux-dtbs-5.10.160-rockchip-5.10.160-1-aarch64.pkg.tar.xz"
-sync
-
-setup-mkinitcpio "${WORKDIR}"
+pac-install-local "${WORKDIR}" "linux-image-5.10.160-rockchip-5.10.160-15-aarch64.pkg.tar.xz"
 sync
 
 #upgrade software

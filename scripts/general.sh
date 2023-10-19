@@ -26,7 +26,7 @@ function get-file() {
 	echo "getting file from ${URL}..."
 	cd ${WORKDIR}/${DLTMP}
     
-	aria2c ${URL}
+	aria2c -x 8 ${URL}
 	cd ../../
 }
 
@@ -103,7 +103,18 @@ function systemd-enable() {
 	local WORKDIR=${1}
 	local UNIT=${2}
 	
+	echo "enabling ${UNIT}"
 	arch-chroot "${WORKDIR}/${ROOTFSDIR}" systemctl enable ${UNIT}
+}
+
+#disable a systemd service
+function systemd-disable() {
+	
+	local WORKDIR=${1}
+	local UNIT=${2}
+	
+	echo "disabling ${UNIT}"
+	arch-chroot "${WORKDIR}/${ROOTFSDIR}" systemctl disable ${UNIT}
 }
 
 #apply overlay
