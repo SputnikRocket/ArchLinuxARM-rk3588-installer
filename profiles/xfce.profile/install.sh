@@ -45,6 +45,7 @@ pac-install "${WORKDIR}" "pavucontrol-qt"
 pac-install "${WORKDIR}" "libpulse"
 
 pac-install "${WORKDIR}" "xfce4"
+pac-install "${WORKDIR}" "xfce4-pulseaudio-plugin"
 pac-install "${WORKDIR}" "xorg"
 pac-install "${WORKDIR}" "lightdm"
 pac-install "${WORKDIR}" "lightdm-gtk-greeter"
