@@ -95,7 +95,7 @@ function unmount-workdirs() {
 	sync
 }
 
-#checks if install disk is nvme or mmc
+#checks if install disk is nvme, mmc, or loop
 function check-nvme-mmc() {
 	
 	local DISKDEVICE=${1}
