@@ -8,6 +8,7 @@ DISKDEVICE=${1}
 BOARD=${2}
 PROFILE=${3}
 BUILDIMAGE=${4}
+USEDLCACHE=${5}
 
 #check if device is set
 if [[ -z ${DISKDEVICE} ]]
@@ -133,6 +134,21 @@ then
 
 else
 	echo "${BUILDIMAGE} is not a valid input!"
+	exit 1
+
+fi
+
+#check whether to not clean up the workdir and use cached downloads
+if [[ -z ${USEDLCACHE} ]]
+then
+	DLCACHE="False"
+
+elif [[ ${USEDLCACHE} == "cache" ]]
+then
+	DLCACHE="True"
+
+else
+	echo "${USEDLCACHE} is not a valid input!"
 	exit 1
 
 fi

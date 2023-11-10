@@ -26,7 +26,7 @@ function get-file() {
 	echo "getting file from ${URL}..."
 	cd ${WORKDIR}/${DLTMP}
     
-	aria2c -x 8 ${URL}
+	aria2c -x 8 --auto-file-renaming=false --continue=true ${URL}
 	cd ../../
 }
 
@@ -57,7 +57,7 @@ function set-locale() {
 	
 	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
 	
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" locale-gen
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/locale-gen
 }
 
 #mkinitcpio update
@@ -66,7 +66,7 @@ function setup-mkinitcpio() {
 	local WORKDIR=${1}
 	
 	echo "generating initramfs..."
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" mkinitcpio -P	
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/mkinitcpio -P	
 }
 
 #make fstab
@@ -104,7 +104,7 @@ function systemd-enable() {
 	local UNIT=${2}
 	
 	echo "enabling ${UNIT}"
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" systemctl enable ${UNIT}
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/systemctl enable ${UNIT}
 }
 
 #disable a systemd service
@@ -114,7 +114,9 @@ function systemd-disable() {
 	local UNIT=${2}
 	
 	echo "disabling ${UNIT}"
-	arch-chroot "${WORKDIR}/${ROOTFSDIR}" systemctl disable ${UNIT}
+	sync
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/systemctl disable ${UNIT}
+	sync
 }
 
 #apply overlay

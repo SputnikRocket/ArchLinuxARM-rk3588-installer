@@ -91,7 +91,7 @@ function unmount-workdirs() {
 
 	echo "unmounting installation..."
 	sync
-	umount -R -f "${WORKDIR}/${ROOTFSDIR}"
+	umount --recursive --force "${WORKDIR}/${ROOTFSDIR}"
 	sync
 }
 
@@ -116,3 +116,22 @@ function set-partuuids() {
 	BOOTUUID=$(uuidgen | head -c8)
 	ROOTUUID=$(uuidgen)
 }
+
+#mount filesystems needed for chroot
+function setup-chroot() {
+	
+	local WORKDIR=${1}
+	
+	sync
+	mount -t proc /proc ${WORKDIR}/${ROOTFSDIR}/proc/
+	sync
+	mount -t sysfs /sys ${WORKDIR}/${ROOTFSDIR}/sys/
+	sync
+	mount -o bind /dev ${WORKDIR}/${ROOTFSDIR}/dev/
+	sync
+	mount -o bind /sys/firmware/efi/efivars ${WORKDIR}/${ROOTFSDIR}/sys/firmware/efi/efivars/
+	sync
+	cp -f --remove-destination /etc/resolv.conf ${WORKDIR}/${ROOTFSDIR}/etc/resolv.conf
+	sync
+}	
+

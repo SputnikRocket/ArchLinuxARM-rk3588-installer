@@ -24,3 +24,4 @@ systemctl daemon-reload
 #mount disk to workdirs
 mount-working-disks "${WORKDIR}" "${DISKDEVICE}"
 sync
+

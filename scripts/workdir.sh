@@ -8,11 +8,20 @@ function setup-workdir() {
 
 	local WORKDIR=${1}
     
-	mkdir -p "${WORKDIR}/${ROOTFSDIR}"
+    if [ ! -e "${WORKDIR}/${ROOTFSDIR}" ]
+    then
+		mkdir -p "${WORKDIR}/${ROOTFSDIR}"
+    fi
     
-	mkdir -p "${WORKDIR}/${BOOTFSDIR}"
-
-	mkdir -p "${WORKDIR}/${DLTMP}"
+    if [ ! -e "${WORKDIR}/${BOOTFSDIR}" ]
+    then
+		mkdir -p "${WORKDIR}/${BOOTFSDIR}"
+	fi
+	
+	if [ ! -e "${WORKDIR}/${DLTMP}" ]
+	then
+		mkdir -p "${WORKDIR}/${DLTMP}"
+	fi
 }
 
 #clean up working directory

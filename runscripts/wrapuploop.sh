@@ -14,7 +14,10 @@ sync
 clean-loop "${DISKDEVICE}"
 sync
 
-clean-workdir "${WORKDIR}"
+if [ ${DLCACHE} = "False" ]
+then
+	clean-workdir "${WORKDIR}"
+fi
 sync
 
 compress-image

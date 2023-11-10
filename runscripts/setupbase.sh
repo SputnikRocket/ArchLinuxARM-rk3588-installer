@@ -13,6 +13,10 @@ sync
 remount-bootfs "${WORKDIR}" "${DISKDEVICE}"
 sync
 
+#setup fses needed for chroot
+setup-chroot "${WORKDIR}"
+sync
+
 #set locale
 set-locale "${WORKDIR}" "${INSTALL_LOCALE}" "${INSTALL_LOCALE_ENC}"
 sync
@@ -59,6 +63,7 @@ sync
 
 mkconfig-grub "${WORKDIR}"
 sync
+
 if [[ "${DEVICETREE}" != "None" ]]
 then
 	insert-dtb-grub "${WORKDIR}"
