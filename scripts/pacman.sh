@@ -11,14 +11,14 @@ function pac-update() {
 	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman -Sy --noconfirm
 }
 
-#pacman-key --init & --populate archlinuxarm
+#pacman-key --init & --populate
 function pac-init() {
 	
 	local WORKDIR=${1}
 	
 	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --init
 	
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --populate archlinuxarm
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --populate
 }
 
 #pacman -S 
