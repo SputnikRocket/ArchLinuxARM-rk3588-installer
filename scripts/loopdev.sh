@@ -51,3 +51,11 @@ function gen-checksum() {
 	cd ../
 	sync
 }
+
+#copy generic image to non-generic-image
+function cp-image() {
+	
+	sync
+	cp -v -v ${OUTDIR}/${IMGPREFIX}-Generic_RK3588-${PROFILE}-UEFI.img ${OUTDIR}/${IMAGEFILE}
+	sync
+}

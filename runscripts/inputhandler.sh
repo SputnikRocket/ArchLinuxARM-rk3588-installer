@@ -9,6 +9,7 @@ BOARD=${2}
 PROFILE=${3}
 BUILDIMAGE=${4}
 USEDLCACHE=${5}
+USESHALLOW=${6}
 
 #check if device is set
 if [[ -z ${DISKDEVICE} ]]
@@ -131,6 +132,10 @@ then
 elif [[ ${BUILDIMAGE} == "img" ]]
 then
 	IMGBUILD="True"
+	
+elif [[ ${BUILDIMAGE} == "noimg" ]]
+then
+	IMGBUILD="False"
 
 else
 	echo "${BUILDIMAGE} is not a valid input!"
@@ -146,6 +151,10 @@ then
 elif [[ ${USEDLCACHE} == "cache" ]]
 then
 	DLCACHE="True"
+	
+elif [[ ${USEDLCACHE} == "nocache" ]]
+then
+	DLCACHE="False"
 
 else
 	echo "${USEDLCACHE} is not a valid input!"
@@ -153,8 +162,27 @@ else
 
 fi
 
+#shallow build the images
+if [[ -z ${USESHALLOW} ]]
+then
+	SHALLOW="False"
+
+elif [[ ${USESHALLOW} == "shallow" ]] && [[ ${IMGBUILD} == "True" ]]
+then
+	SHALLOW="True"
+	
+elif [[ ${USESHALLOW} == "noshallow" ]]
+then
+	SHALLOW="False"
+
+else
+	echo "${USESHALLOW} is not a valid input!"
+	exit 1
+
+fi
+
 #check if user really wants to do this ONLY if he does not want to build an image
-if [[ ${IMGBUILD} = "False" ]]
+if [[ ${IMGBUILD} == "False" ]]
 then
 	#are you sure?
 	read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
