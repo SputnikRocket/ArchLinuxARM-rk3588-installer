@@ -23,4 +23,4 @@ here are some of the ways you can contribute to this project, to show appreciati
 ### Credits:
 * @Joshua-Riek and the [ubuntu-rockchip](https://github.com/Joshua-Riek/ubuntu-rockchip) project for some files in [overlays](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/tree/main/overlays) & pre-built kernel packages
 * @mariobalanica and all those part of the [edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588) project, for making this possible 
-* @Rippanda12 and the (BredOS)[https://github.com/BredOS] project for packages used in the desktop builds
+* @Rippanda12 and the [BredOS](https://github.com/BredOS) project for packages used in the desktop builds
