@@ -20,12 +20,6 @@ then
 	#make partitions
 	mk-parts "${DISKDEVICE}"
 	sync
-
-	#hack to make mount not spam fstab change messages
-	trap '' EXIT
-	systemctl daemon-reload
-	trap 'echo Error: in $0 on line $LINENO' ERR
-	sync
 	
 fi
 #mount disk to workdirs
