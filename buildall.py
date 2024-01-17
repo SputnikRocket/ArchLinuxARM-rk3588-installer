@@ -1,6 +1,6 @@
 from subprocess import run
 
-platfoms = [
+platforms = [
 "orangepi-5plus",
 "orangepi-5",
 "orangepi-5b",
@@ -11,8 +11,7 @@ platfoms = [
 "nanopi-r6s",
 "nanopc-t6",
 "khadas-edge2",
-"mixtile-blade3",
-"none"
+"mixtile-blade3"
 ]
 
 profiles = [
@@ -20,7 +19,9 @@ profiles = [
 "xfce"
 ]
 
-for plat in platfoms:
-	for prof in profiles:
-		run(["/usr/bin/bash","./run.sh", "/dev/loop0", plat, prof, "img"])
+run(["/usr/bin/bash","./run.sh", "/dev/loop0", "none", "minimal", "img", "cache"])
+run(["/usr/bin/bash","./run.sh", "/dev/loop1", "none", "xfce", "img", "cache"])
 
+for plat in platforms:
+	for prof in profiles:
+		run(["/usr/bin/bash","./run.sh", "/dev/loop2", plat, prof, "img", "cache", "shallow"])
