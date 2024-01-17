@@ -50,7 +50,19 @@ then
 	pac-remove "${WORKDIR}" "linux-aarch64"
 	sync
 
-	pac-install-local "${WORKDIR}" "linux-image-5.10.160-rockchip-5.10.160-15-aarch64.pkg.tar.xz"
+	if [ ${KERNELINREPO} = "False" ]
+	then
+		get-file "${WORKDIR}" "${KERNELURL}"
+		pac-install-local "${WORKDIR}" "${KERNELPACKAGE}"
+	
+	elif [ ${KERNELINREPO} = "True" ]
+	then
+		pac-install "${WORKDIR}" "${KERNELPKGNAME}"
+		
+	else
+		pac-install "${WORKDIR}" "linux-aarch64"
+	
+	fi
 	sync
 
 	#upgrade software
