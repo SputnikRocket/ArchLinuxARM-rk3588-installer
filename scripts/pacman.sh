@@ -73,3 +73,12 @@ function pac-forceremove() {
 	
 	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman -Rdd "${PACKAGE}"  --noconfirm
 }
+
+#install packages from list
+function pac-install-list() {
+	
+	local WORKDIR=${1}
+	local PKGLIST=${2}
+	
+	xargs chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman -S --noconfirm < ${PKGLIST}
+}

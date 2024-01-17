@@ -30,40 +30,10 @@ pac-update "${WORKDIR}"
 sync
 
 #install necessary packages
-pac-install "${WORKDIR}" "base-devel"
-pac-install "${WORKDIR}" "networkmanager"
-pac-install "${WORKDIR}" "network-manager-applet"
-pac-install "${WORKDIR}" "blueman"
-
-pac-install "${WORKDIR}" "pipewire"
-pac-install "${WORKDIR}" "pipewire-audio"
-pac-install "${WORKDIR}" "wireplumber"
-pac-install "${WORKDIR}" "pipewire-jack"
-pac-install "${WORKDIR}" "pipewire-pulse"
-pac-install "${WORKDIR}" "pavucontrol"
-pac-install "${WORKDIR}" "pavucontrol-qt"
-pac-install "${WORKDIR}" "libpulse"
-
-pac-install "${WORKDIR}" "xfce4"
-pac-install "${WORKDIR}" "xfce4-pulseaudio-plugin"
-pac-install "${WORKDIR}" "xorg"
-pac-install "${WORKDIR}" "lightdm"
-pac-install "${WORKDIR}" "lightdm-gtk-greeter"
-pac-install "${WORKDIR}" "xdg-user-dirs"
-
-pac-install "${WORKDIR}" "lightdm-gtk-greeter-settings"
-pac-install "${WORKDIR}" "gparted"
-pac-install "${WORKDIR}" "baobab"
-pac-install "${WORKDIR}" "gimp"
-pac-install "${WORKDIR}" "mousepad"
-pac-install "${WORKDIR}" "geany"
-pac-install "${WORKDIR}" "minetest"
-pac-install "${WORKDIR}" "firefox"
+pac-install-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}.profile/${PROFILE}.pkgs"
 sync
 
 #install panfork
-pac-forceremove "${WORKDIR}" "mesa"
-pac-install "${WORKDIR}" "mesa-panfork-git"
 pac-install-local "${WORKDIR}" "mali-g610-firmware-1.0.2-1-any.pkg.tar.zst"
 sync
 
