@@ -1,5 +1,7 @@
 # ArchLinuxARM-rk3588-installer
 
+## Note: I have not been working on this project consistently or at all for a long time now. I may occasionally push updates, but I am not actively developing this anymore. this will probably still work however, for whoever wants to use it. but if you want the latest features and development, I recommend @kwankiu's [archlinux-installer-rock5](https://github.com/kwankiu/archlinux-installer-rock5)
+
 [![Total Github Downloads](https://img.shields.io/github/downloads/SputnikRocket/ArchLinuxARM-rk3588-installer/total.svg?&color=E95420&label=Total%20Downloads)](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/releases)
 
 Arch Linux ARM for rk3588 SBCs, such as the Orange Pi 5(+,B), Indiedroid Nova, Radxa Rock 5(A,B), and others using edk2 UEFI.
