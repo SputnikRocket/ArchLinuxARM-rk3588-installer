@@ -89,6 +89,7 @@ function pac-add-key() {
 	local WORKDIR=${1}
 	local PACKEY=${2}
 	
+	echo "Adding pacman key ${PACKEY}"
 	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --recv-keys "${PACKEY}"
 	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --lsign "${PACKEY}"
 }
@@ -100,7 +101,9 @@ function pac-add-repo() {
 	local REPONAME=${2}
 	local REPOURL=${3}
 	
+	echo "Adding repo ${REPONAME} ${REPOURL}"
 	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
 	echo "${REPONAME}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
+	echo "SigLevel = Never" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
 	echo "${REPOURL}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
 }
