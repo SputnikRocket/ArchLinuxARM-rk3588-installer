@@ -82,3 +82,25 @@ function pac-install-list() {
 	
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman -S --noconfirm < ${PKGLIST}
 }
+
+# add pacman repo key
+function pac-add-key() {
+	
+	local WORKDIR=${1}
+	local PACKEY=${2}
+	
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --recv-keys "${PACKEY}"
+	chroot ${WORKDIR}/${ROOTFSDIR} /bin/pacman-key --lsign "${PACKEY}"
+}
+
+# add pacman repo
+function pac-add-repo() {
+	
+	local WORKDIR=${1}
+	local REPONAME=${2}
+	local REPOURL=${3}
+	
+	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
+	echo "${REPONAME}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
+	echo "${REPOURL}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
+}
