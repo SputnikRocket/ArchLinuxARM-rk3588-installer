@@ -46,51 +46,24 @@ then
 	pac-update "${WORKDIR}"
 	sync
 
-	#setup kernel
+	#remove builtin kernel
 	pac-remove "${WORKDIR}" "linux-aarch64"
-	sync
-
-	if [ ${KERNELINREPO} = "False" ]
-	then
-		get-file "${WORKDIR}" "${KERNELURL}"
-		pac-install-local "${WORKDIR}" "${KERNELPACKAGE}"
-	
-	elif [ ${KERNELINREPO} = "True" ]
-	then
-		pac-install "${WORKDIR}" "${KERNELPKGNAME}"
-		
-	else
-		pac-install "${WORKDIR}" "linux-aarch64"
-	
-	fi
 	sync
 
 	#upgrade software
 	pac-upgrade "${WORKDIR}"
 	sync
-
-	#install extra software
-	pac-install "${WORKDIR}" "gptfdisk"
-	pac-install "${WORKDIR}" "parted"
+	
+	#apply profile config
+	source runscripts/applyprofiles.sh
 	sync
 
 	#install grub
-	pac-install "${WORKDIR}" "grub"
-	sync
-
 	install-grub "${WORKDIR}"
 	sync
 
 	mkconfig-grub "${WORKDIR}"
 	sync
-
-fi
-sync
-
-#check whether platforn wants dtb
-if [[ "${DEVICETREE}" != "None" ]]
-then
-	insert-dtb-grub "${WORKDIR}"
 
 fi
 sync
