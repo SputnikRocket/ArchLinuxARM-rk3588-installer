@@ -25,4 +25,9 @@ geany
 minetest
 firefox
 mesa-panfork-git
-
+mali-valhall-g610-firmware
+gptfdisk
+parted
+grub
+efibootmgr
+linux-aarch64-rockchip-bsp6.1-joshua-bin
