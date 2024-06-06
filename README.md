@@ -9,8 +9,10 @@ requires [edk2-porting/edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588)
 ## Installation Instructions
 Installation Instructions can be found in the [Wiki](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/wiki).
 
-## Note:
-this project is very much a work in progress. therefore, there may be missing features, bugs, and lack of documentation for now.
+## Notes:
+- This project is very much a work in progress. therefore, there may be missing features, bugs, and lack of documentation for now.
+- This builder can be made to build for other UEFI capable arm64 devices, but I will not support such configurations.
+- This project is not intended to be a easy one-step way to use Arch Linux, it only takes an otherwise bare-bones Arch Linux ARM generic rootfs tarball and makes it bootable.
 
 ## Contributing
 here are some of the ways you can contribute to this project, to show appreciation for my work: 
