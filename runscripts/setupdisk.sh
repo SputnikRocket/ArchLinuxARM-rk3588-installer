@@ -11,12 +11,7 @@ then
 	#regenerate gpt
 	regen-gpt "${DISKDEVICE}"
 	sync
-
-	#install uefi to disk
-	#get-file "${WORKDIR}" "${UEFI_URL}"
-	#efi-install "${WORKDIR}" "${DISKDEVICE}" "${UEFI_FILE}"
-	#sync 
-
+ 
 	#make partitions
 	mk-parts "${DISKDEVICE}"
 	sync
