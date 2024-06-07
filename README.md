@@ -21,6 +21,7 @@ here are some of the ways you can contribute to this project, to show appreciati
 * Following me on GitHub
 * Opening issues for for adding features or fixing critical bugs
 * Forking this repo and submitting code
+* Sponsoring me on github, any amount is greatly appreciated, thank you!
 
 ### Credits:
 * @Joshua-Riek and the [ubuntu-rockchip](https://github.com/Joshua-Riek/ubuntu-rockchip) project for some files in [overlays](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/tree/main/overlays)
