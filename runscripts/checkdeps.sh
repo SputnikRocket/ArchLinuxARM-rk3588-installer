@@ -55,3 +55,17 @@ then
 	exit 1
 	
 fi
+
+if [[ -z $(command -v xz) ]]
+then
+	echo "xz is missing, aborting"
+	exit 1
+	
+fi
+
+if [[ -z $(command -v uuidgen) ]]
+then
+	echo "uuidgen is missing, aborting"
+	exit 1
+	
+fi
