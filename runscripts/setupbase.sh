@@ -24,6 +24,16 @@ then
 	#setup fses needed for chroot
 	setup-chroot "${WORKDIR}"
 	sync
+	
+	#copy qemu to chroot if not aarch64
+	if [[ ${HOSTARCH} == "aarch64" ]]
+	then
+		echo ""
+		
+	else
+		install-qemu-chroot "${WORKDIR}"
+
+	fi
 
 	#set locale
 	set-locale "${WORKDIR}" "${INSTALL_LOCALE}" "${INSTALL_LOCALE_ENC}"

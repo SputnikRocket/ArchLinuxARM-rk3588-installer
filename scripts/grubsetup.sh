@@ -9,7 +9,7 @@ function install-grub() {
 	local WORKDIR=${1}
 	
 	echo "installing grub to ${DISKPART1}..."
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/grub-install "${DISKPART1}" \
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/grub-install "${DISKPART1}" \
 	--efi-directory="/${EFIDIR}"                                    \
 	--directory=/usr/lib/grub/arm64-efi/                            \
 	--removable                                                     \
@@ -34,5 +34,5 @@ function mkconfig-grub() {
 	
 	local WORKDIR=${1}
 	
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/grub-mkconfig -o "/${EFIDIR}/grub/grub.cfg"
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/grub-mkconfig -o "/${EFIDIR}/grub/grub.cfg"
 }

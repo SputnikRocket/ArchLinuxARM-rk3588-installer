@@ -91,6 +91,7 @@ function unmount-workdirs() {
 
 	echo "unmounting installation..."
 	sync
+	umount --recursive --force --lazy "${WORKDIR}/${ROOTFSDIR}/dev"
 	umount --recursive --force "${WORKDIR}/${ROOTFSDIR}"
 	sync
 }
@@ -127,7 +128,9 @@ function setup-chroot() {
 	sync
 	mount -t sysfs /sys ${WORKDIR}/${ROOTFSDIR}/sys/
 	sync
-	mount -o bind /dev ${WORKDIR}/${ROOTFSDIR}/dev/
+	mount --rbind /dev ${WORKDIR}/${ROOTFSDIR}/dev/
+	sync
+	mount --make-rslave ${WORKDIR}/${ROOTFSDIR}/dev/
 	sync
 	mount -o bind /sys/firmware/efi/efivars ${WORKDIR}/${ROOTFSDIR}/sys/firmware/efi/efivars/
 	sync

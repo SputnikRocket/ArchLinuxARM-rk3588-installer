@@ -63,3 +63,17 @@ then
 	
 fi
 
+if [[ ${HOSTARCH} == "aarch64" ]]
+then	
+	echo ""
+	
+else
+	if [[ -z $(command -v qemu-aarch64-static) ]]
+	then
+		echo "xz is missing, aborting"
+		exit 1
+	
+	fi
+
+fi
+

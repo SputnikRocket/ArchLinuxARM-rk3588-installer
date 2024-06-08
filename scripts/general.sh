@@ -57,7 +57,7 @@ function set-locale() {
 	
 	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
 	
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/locale-gen
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/locale-gen
 }
 
 #mkinitcpio update
@@ -66,7 +66,7 @@ function setup-mkinitcpio() {
 	local WORKDIR=${1}
 	
 	echo "generating initramfs..."
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/mkinitcpio -P	
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/mkinitcpio -P	
 }
 
 #make fstab
@@ -95,6 +95,7 @@ function clean-configs() {
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/lib/pacman/sync/*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/${DLTMP}
 	rm -rf ${WORKDIR}/${NEWBOOTFSDIR}/grub/grub2.cfg
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
 }
 
 #enable a systemd service
@@ -104,7 +105,7 @@ function systemd-enable() {
 	local UNIT=${2}
 	
 	echo "enabling ${UNIT}"
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/systemctl enable ${UNIT}
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl enable ${UNIT}
 }
 
 #disable a systemd service
@@ -115,7 +116,7 @@ function systemd-disable() {
 	
 	echo "disabling ${UNIT}"
 	sync
-	chroot ${WORKDIR}/${ROOTFSDIR} /bin/systemctl disable ${UNIT}
+	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl disable ${UNIT}
 	sync
 }
 
@@ -135,3 +136,13 @@ function install-profile() {
 	
 	source ${PROFILEDIR}/${PROFILE}.profile/install.sh
 }
+
+# copy host qemu to chroot
+function install-qemu-chroot() {
+	
+	local WORKDIR=${1}
+	local HOSTQEMU=$(which qemu-aarch64-static)
+	
+	cp -rf ${HOSTQEMU} ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
+}
+	
