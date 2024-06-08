@@ -70,7 +70,7 @@ then
 else
 	if [[ -z $(command -v qemu-aarch64-static) ]]
 	then
-		echo "xz is missing, aborting"
+		echo "qemu-aarch64-static is missing, aborting"
 		exit 1
 	
 	fi
