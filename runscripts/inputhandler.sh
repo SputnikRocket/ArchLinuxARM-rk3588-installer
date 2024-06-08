@@ -138,6 +138,13 @@ then
 fi
 echo "continuing.."
 
+#check if we should find first available loop
+if [[ ${DISKDEVICE} == "find" ]]
+then
+	DISKDEVICE=$(losetup -f)
+
+fi
+
 #Check if specified device exists
 check-if-exists "${DISKDEVICE}"
 sync
