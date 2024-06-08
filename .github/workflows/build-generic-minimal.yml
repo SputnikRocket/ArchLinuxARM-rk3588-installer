@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Generic Image
         run: |
-          sudo bash ./run.sh /dev/loop0 none minimal img 
+          sudo bash ./run.sh find none minimal img 
 
       - name: Upload
         uses: actions/upload-artifact@v4.3.1
