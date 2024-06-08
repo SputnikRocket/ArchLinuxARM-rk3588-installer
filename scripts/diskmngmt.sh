@@ -132,8 +132,8 @@ function setup-chroot() {
 	sync
 	mount --make-rslave ${WORKDIR}/${ROOTFSDIR}/dev/
 	sync
-	mount -o bind /sys/firmware/efi/efivars ${WORKDIR}/${ROOTFSDIR}/sys/firmware/efi/efivars/
-	sync
+	#mount -o bind /sys/firmware/efi/efivars ${WORKDIR}/${ROOTFSDIR}/sys/firmware/efi/efivars/
+	#sync
 	cp -f --remove-destination /etc/resolv.conf ${WORKDIR}/${ROOTFSDIR}/etc/resolv.conf
 	sync
 }	
