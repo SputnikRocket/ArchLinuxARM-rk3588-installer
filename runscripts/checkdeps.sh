@@ -63,9 +63,3 @@ then
 	
 fi
 
-if [[ -z $(command -v uuidgen) ]]
-then
-	echo "uuidgen is missing, aborting"
-	exit 1
-	
-fi
