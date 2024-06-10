@@ -53,9 +53,6 @@ then
 	pac-init "${WORKDIR}"
 	sync
 
-	pac-update "${WORKDIR}"
-	sync
-
 	#remove builtin kernel
 	pac-remove "${WORKDIR}" "linux-aarch64"
 	sync
