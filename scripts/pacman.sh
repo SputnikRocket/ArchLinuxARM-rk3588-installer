@@ -83,6 +83,15 @@ function pac-install-list() {
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -S --noconfirm < ${PKGLIST}
 }
 
+#install packages from list and upgrade at same time
+function pac-upgrade-list() {
+	
+	local WORKDIR=${1}
+	local PKGLIST=${2}
+	
+	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Syyu --noconfirm < ${PKGLIST}
+}
+
 # add pacman repo key
 function pac-add-key() {
 	

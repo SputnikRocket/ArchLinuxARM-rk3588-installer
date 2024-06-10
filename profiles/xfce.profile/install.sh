@@ -20,12 +20,8 @@ pac-add-key "${WORKDIR}" "BA27F219383BB875"
 pac-add-repo "${WORKDIR}" "[7Ji]" "Server = https://github.com/7Ji/archrepo/releases/download/$arch"
 sync
 
-#update
-pac-update "${WORKDIR}"
-sync
-
 #install necessary packages
-pac-install-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}.profile/${PROFILE}.pkgs"
+pac-upgrade-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}.profile/${PROFILE}.pkgs"
 sync
 
 #enable and disable services

@@ -59,10 +59,6 @@ then
 	#remove builtin kernel
 	pac-remove "${WORKDIR}" "linux-aarch64"
 	sync
-
-	#upgrade software
-	pac-upgrade "${WORKDIR}"
-	sync
 	
 	#apply profile config
 	source runscripts/applyprofiles.sh

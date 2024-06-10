@@ -15,12 +15,8 @@ pac-add-key "${WORKDIR}" "B669E3B56B3DC918"
 pac-add-repo "${WORKDIR}" "[experimental]" "Server = https://github.com/kwankiu/PKGBUILDs/releases/download/experimental"
 sync
 
-#do a pacman update for apparently no reason
-pac-update "${WORKDIR}"
-sync
-
 #install necessary packages
-pac-install-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}.profile/${PROFILE}.pkgs"
+pac-upgrade-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}.profile/${PROFILE}.pkgs"
 sync
 
 #enable services for enabling usb 2 and resizing filesystem
