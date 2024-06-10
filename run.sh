@@ -14,7 +14,7 @@ source scripts/workdir.sh
 source scripts/general.sh
 source scripts/diskmngmt.sh
 source scripts/pacman.sh
-source scripts/grubsetup.sh
+source scripts/bootloadersetup.sh
 source scripts/loopdev.sh
 
 source runscripts/inputhandler.sh
