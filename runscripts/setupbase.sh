@@ -35,8 +35,9 @@ then
 
 	fi
 
-	#set locale
+	#set some settings
 	set-locale "${WORKDIR}" "${INSTALL_LOCALE}" "${INSTALL_LOCALE_ENC}"
+	set-hostname "${WORKDIR}" "${INSTALL_HOSTNAME}"
 	sync
 
 	#mount tmp downloads

@@ -146,3 +146,13 @@ function install-qemu-chroot() {
 	cp -rf ${HOSTQEMU} ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
 }
 	
+# Set install hostname
+function set-hostname() {
+
+	local WORKDIR=${1}
+	local SETHOSTNAME=${2}
+	
+	echo "Setting Hostname to ${SETHOSTNAME}"
+	echo "${SETHOSTNAME}" > "${WORKDIR}/${ROOTFSDIR}/etc/hostname"
+}
+
