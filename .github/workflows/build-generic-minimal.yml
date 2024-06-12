@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Generic Image
         run: |
-          sudo bash ./run.sh find none minimal img 
+          sudo bash ./run.sh --device find --board none --profile minimal --image --cache  
 
       - name: Upload
         uses: actions/upload-artifact@v4.3.1
