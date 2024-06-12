@@ -22,6 +22,11 @@ function setup-workdir() {
 	then
 		mkdir -p "${WORKDIR}/${DLTMP}"
 	fi
+
+	if [ ! -e "${WORKDIR}/${PKGCACHEDIR}" ]
+        then
+                mkdir -p "${WORKDIR}/${PKGCACHEDIR}"
+        fi
 }
 
 #clean up working directory
@@ -39,4 +44,5 @@ function mount-dltmp() {
 	mkdir -p "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
     
 	mount -o bind "${WORKDIR}/${DLTMP}" "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"	
+	mount -o bind "${WORKDIR}/${PKGCACHEDIR}" "${WORKDIR}/${ROOTFSDIR}/var/cache/pacman/pkg"
 }

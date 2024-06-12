@@ -1,3 +1,5 @@
+dbus
+dbus-daemon-units
 base-devel
 networkmanager
 network-manager-applet
