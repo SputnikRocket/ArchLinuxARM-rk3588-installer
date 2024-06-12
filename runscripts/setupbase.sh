@@ -40,7 +40,7 @@ then
 	set-hostname "${WORKDIR}" "${INSTALL_HOSTNAME}"
 	sync
 
-	#mount tmp downloads
+	#mount temporary directories
 	mount-dltmp "${WORKDIR}"
 	sync
 
