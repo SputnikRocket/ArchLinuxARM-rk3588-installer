@@ -14,30 +14,35 @@ function help-msg() {
 while [ "$#" -gt 0 ]
 do
     case "${1}" in
-        -d|--device) 
+        -D|--device) 
 			DISKDEVICE=${2}
 			shift 2
         ;;
         
-        -b|--board) 
+        -B|--board) 
 			BOARD=${2}
 			shift 2
         ;;
         
-        -p|--profile) 
+        -P|--profile) 
 			PROFILE=${2}
 			shift 2
         ;;
         
-        -c|--cache) 
+        -C|--cache) 
 			DLCACHE="True"
 			shift
         ;;
         
-        -i|--image) 
+        -I|--image) 
 			IMGBUILD="True"
 			shift
         ;;
+        
+        -T|--tmp)
+			OUTPUTTMP="True"
+			shift
+		;;
         
         -h|--help|?) 
 			help-msg
@@ -94,6 +99,12 @@ fi
 if [[ -z ${SHALLOW} ]]
 then
 	SHALLOW="False"
+fi
+
+#check whether to mount the output folder as tmpfs
+if [[ -z ${OUTPUTTMP} ]]
+then
+	OUTPUTTMP="False"
 fi
 
 #check whether to build an image

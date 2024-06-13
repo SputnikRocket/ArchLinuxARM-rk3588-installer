@@ -156,3 +156,11 @@ function set-hostname() {
 	echo "${SETHOSTNAME}" > "${WORKDIR}/${ROOTFSDIR}/etc/hostname"
 }
 
+#mount output directory as tmpfs
+function mount-tmp-output() {
+	
+	echo "Mounting output directory as tmpfs..."
+	mount -t tmpfs tmpfs ${OUTDIR}
+}
+	
+	
