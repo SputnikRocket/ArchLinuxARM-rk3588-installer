@@ -3,13 +3,62 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-#Disk device
-DISKDEVICE=${1}
-BOARD=${2}
-PROFILE=${3}
-BUILDIMAGE=${4}
-USEDLCACHE=${5}
-USESHALLOW=${6}
+#display help
+function help-msg() {
+	
+	echo "Not implemented yet"
+	exit 1
+}
+
+#get flags
+while [ "$#" -gt 0 ]
+do
+    case "${1}" in
+        -D|--device) 
+			DISKDEVICE=${2}
+			shift 2
+        ;;
+        
+        -B|--board) 
+			BOARD=${2}
+			shift 2
+        ;;
+        
+        -P|--profile) 
+			PROFILE=${2}
+			shift 2
+        ;;
+        
+        -C|--cache) 
+			DLCACHE="True"
+			shift
+        ;;
+        
+        -I|--image) 
+			IMGBUILD="True"
+			shift
+        ;;
+        
+        -T|--tmp)
+			OUTPUTTMP="True"
+			shift
+		;;
+        
+        -h|--help|?) 
+			help-msg
+			exit 0
+        ;;
+        
+        -*)
+            echo "Error: unknown argument \"${1}\""
+            exit 1
+        ;;
+        
+        *)
+            shift
+        ;;
+    esac
+done
 
 #check if device is set
 if [[ -z ${DISKDEVICE} ]]
@@ -17,137 +66,64 @@ then
 	echo "Error: DISKDEVICE is not set"
     exit 1
 fi
-sleep 0.5
 
-#check if BOARD is specified, if not, display chooser
-if [[ -z ${BOARD} ]]
+#check if we should find first available loop
+if [[ ${DISKDEVICE} == "find" ]]
 then
-	clear
-	echo "Choose which board to install for by entering it's number below"
-	echo "---------------------"
-	echo " 1. None"
-	echo "---------------------"
-	read -p "Board: " BOARDINDEX
+	DISKDEVICE=$(losetup -f)
 fi
 
-#if PROFILE is not specified, display chooser
-if [[ -z ${PROFILE} ]]
-then
-	clear
-	echo "Choose which profile to use for installation by entering it's number below"
-	echo "---------------------"
-	echo " 1. minimal"
-	echo " 2. xfce"
-	echo "---------------------"
-	read -p "Profile: " PROFILEINDEX
-fi
+#Check if specified disk exists
+check-if-exists "${DISKDEVICE}"
+sync
 
-#set PROFILE based off of script arguments or interactive input
-if [[ ${PROFILEINDEX} == "1" ]] || [[ ${PROFILE} = "minimal" ]]
-then
-	PROFILE="minimal"
-	
-elif [[ ${PROFILEINDEX} == "2" ]] || [[ ${PROFILE} = "xfce" ]]
-then
-	PROFILE="xfce"
-	
-else
-	echo "not a valid choice! exiting..."
-	exit 1
-
-fi
-	
 #set BOARD config based off of script arguments or interactive input	
-if [[ ${BOARDINDEX} == "1" ]] || [[ ${BOARD} = "none" ]]
+if [[ ${BOARD} = "none" ]]
 then
-	config-none
-	
+	config-none	
 else
 	echo "not a valid choice! exiting..."
-	exit 1
-	
+	exit 1	
 fi
 
-#check whether to build an image; not really necessary to display a choice box here
-if [[ -z ${BUILDIMAGE} ]]
-then
-	IMGBUILD="False"
-
-elif [[ ${BUILDIMAGE} == "img" ]]
-then
-	IMGBUILD="True"
-	
-elif [[ ${BUILDIMAGE} == "noimg" ]]
-then
-	IMGBUILD="False"
-
-else
-	echo "${BUILDIMAGE} is not a valid input!"
-	exit 1
-
-fi
+#check if profile exists
+check-if-exists "${PROFILEDIR}/${PROFILE}.profile"
 
 #check whether to not clean up the workdir and use cached downloads
-if [[ -z ${USEDLCACHE} ]]
+if [[ -z ${DLCACHE} ]]
 then
 	DLCACHE="False"
-
-elif [[ ${USEDLCACHE} == "cache" ]]
-then
-	DLCACHE="True"
-	
-elif [[ ${USEDLCACHE} == "nocache" ]]
-then
-	DLCACHE="False"
-
-else
-	echo "${USEDLCACHE} is not a valid input!"
-	exit 1
-
 fi
 
 #shallow build the images
-if [[ -z ${USESHALLOW} ]]
+if [[ -z ${SHALLOW} ]]
 then
 	SHALLOW="False"
-
-elif [[ ${USESHALLOW} == "shallow" ]] && [[ ${IMGBUILD} == "True" ]]
-then
-	SHALLOW="True"
-	
-elif [[ ${USESHALLOW} == "noshallow" ]]
-then
-	SHALLOW="False"
-
-else
-	echo "${USESHALLOW} is not a valid input!"
-	exit 1
-
 fi
 
-#check if user really wants to do this ONLY if he does not want to build an image
-if [[ ${IMGBUILD} == "False" ]]
+#check whether to mount the output folder as tmpfs
+if [[ -z ${OUTPUTTMP} ]]
 then
+	OUTPUTTMP="False"
+fi
+
+#check whether to build an image
+if [[ -z ${IMGBUILD} ]]
+then
+	IMGBUILD="False"
+	
 	#are you sure?
 	read -p "THIS WILL WIPE ALL DATA ON ${DISKDEVICE} and install Arch Linux ARM on it. do you want to proceed? [y/N]: " CONTINUE
 	if [[ ${CONTINUE} != [Yy]* ]]
 	then
 		echo "Abort!"
 		exit 100
-	fi
+	fi	
 fi
+
 echo "continuing.."
 
-#check if we should find first available loop
-if [[ ${DISKDEVICE} == "find" ]]
-then
-	DISKDEVICE=$(losetup -f)
-
-fi
-
-#Check if specified device exists
-check-if-exists "${DISKDEVICE}"
-sync
+sleep 0.5
 
 #set partuuids for rest of installer
 set-partuuids
