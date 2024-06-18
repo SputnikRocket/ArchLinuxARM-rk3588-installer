@@ -1,4 +1,4 @@
-name: Build Arch Linux ARM for rk3588 UEFI
+name: Build Arch Linux ARM for rk3588 UEFI and Release
 
 # Controls when the workflow will run
 on:
