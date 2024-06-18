@@ -1,0 +1,39 @@
+name: Build Arch Linux ARM for rk3588 UEFI
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a set of commands using the runners shell
+      - name: Install prequisites
+        run: |
+          sudo apt update && apt-get purge needrestart -y && sudo apt-get upgrade -y
+          sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
+      - name: Build Generic Image
+        run: |
+          sudo bash ./run.sh --device find --board none --profile minimal --image --cache --tmp 
+      - name: Upload
+        uses: ncipollo/release-action@v1
+        with:
+            artifacts: "./outputs/ArchLinuxARM-Generic_RK3588-minimal-UEFI.img.xz*"
+            makeLatest: false
+            prerelease: true
+            allowUpdates: true
+            omitBody: true
+            draft: true
+            
