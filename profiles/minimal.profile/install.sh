@@ -12,7 +12,7 @@ sync
 
 # add kwankiu's pacman repo
 pac-add-key "${WORKDIR}" "B669E3B56B3DC918"
-pac-add-repo "${WORKDIR}" "[experimental]" "Server = https://github.com/kwankiu/PKGBUILDs/releases/download/experimental"
+pac-add-repo "${WORKDIR}" "[rockchip]" "Server = https://github.com/kwankiu/PKGBUILDs/releases/download/$arch"
 sync
 
 #install necessary packages
