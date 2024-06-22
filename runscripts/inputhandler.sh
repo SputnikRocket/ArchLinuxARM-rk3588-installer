@@ -6,8 +6,34 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 #display help
 function help-msg() {
 	
-	echo "Not implemented yet"
-	exit 1
+	echo \
+"""
+Usage: ${0} OPTIONS...
+ArchLinuxARM-rk3588-installer for UEFI is a utility for installation and setup of 
+Arch Linux ARM for UEFI-capable aarch64 devices, 
+either to a physical disk OR to a disk image file.
+
+Options:
+	-D, --device <device>	Disk device to install to. Can be a physical device, 
+				loop, or \"find\" to automatically allocate a loop device. 
+				Loop devices can only be used with the \"--image\" option.
+
+	-B, --board <board>	Platform to install for
+
+	-P, --profile <profile>	Installation profile to use
+
+	-C, --cache		Cache downloaded files and do not clean up working directories
+
+	-I, --image		Build a Disk image
+
+	-T, --tmp		Mount output directory as a tmpfs device, defaults to half 
+				of RAM, only for use with \"--image\" 
+				**TAKE AVAILABLE MEMORY AND OUTPUT SIZE INTO ACCOUT WHILE USING THIS!**
+
+	-h, --help		Display this help
+
+"""
+	exit 0
 }
 
 #get flags
