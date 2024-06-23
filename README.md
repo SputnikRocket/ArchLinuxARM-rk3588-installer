@@ -11,8 +11,7 @@ Installation Instructions can be found in the [Wiki](https://github.com/SputnikR
 
 ## Notes:
 - This project is very much a work in progress. therefore, there may be missing features, bugs, and lack of documentation for now.
-- This builder can be made to build for other UEFI capable arm64 devices, but I will not support such configurations.
-- This project is not intended to be a easy one-step way to use Arch Linux, it only takes an otherwise bare-bones Arch Linux ARM generic rootfs tarball, upgrades it, and makes it bootable.
+- This builder may be used to build for other aarch64 UEFI platforms via contribution, but I will only support the "Generic RK3588" target.
 
 ## Contributing
 here are some of the ways you can contribute to this project, to show appreciation for my work: 
@@ -24,5 +23,6 @@ here are some of the ways you can contribute to this project, to show appreciati
 * Sponsoring me on github, any amount is greatly appreciated, thank you!
 
 ### Credits:
+* @kwankiu for rk3588 kernel packages in his [repo](https://github.com/kwankiu/PKGBUILDs)
 * @Joshua-Riek and the [ubuntu-rockchip](https://github.com/Joshua-Riek/ubuntu-rockchip) project for some files in [overlays](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/tree/main/overlays)
 * @mariobalanica and all those part of the [edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588) project, for making this possible
