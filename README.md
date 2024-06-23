@@ -13,6 +13,10 @@ Installation Instructions can be found in the [Wiki](https://github.com/SputnikR
 - This project is very much a work in progress. therefore, there may be missing features, bugs, and lack of documentation for now.
 - This builder may be used to build for other aarch64 UEFI platforms via contribution, but I will only support the "Generic RK3588" target.
 
+### Todo:
+- Continue to add more input flags to allow for higher control over the build process 
+- Add simple build platform hooks and profiles 
+
 ## Contributing
 here are some of the ways you can contribute to this project, to show appreciation for my work: 
 
