@@ -3,8 +3,7 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-source runscripts/checkarch.sh
-source runscripts/checkdeps.sh
+source runscripts/checkhost.sh
 
 source configs/installerconfigs.sh
 source configs/userconfigs.sh

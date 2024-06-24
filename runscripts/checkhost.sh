@@ -3,8 +3,19 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
+# Check Host arch and if qemu is needed
+HOSTARCH=$(uname -m)
+if [[ ${HOSTARCH} == "aarch64" ]]
+then
+	CHROOT_EXEC=""
+	
+else
+	CHROOT_EXEC="qemu-aarch64-static"
+
+fi
+
 #check whether requirements are met
-if [ "$(id -u)" -ne 0 ]; then 
+if [[ "$(id -u)" -ne 0 ]]; then 
     echo "Please run as root"
     exit 1
 
