@@ -3,8 +3,6 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-source runscripts/checkhost.sh
-
 source configs/installerconfigs.sh
 source configs/userconfigs.sh
 source configs/boards.sh
@@ -17,6 +15,14 @@ source scripts/bootloadersetup.sh
 source scripts/loopdev.sh
 
 source runscripts/inputhandler.sh
+
+source runscripts/checkhost.sh
+
+#check for dry run 
+if [[ ${DRYRUN} == "True" ]]
+then
+	exit 0
+fi
 
 #prepare work and download files
 source runscripts/prepdownload.sh

@@ -31,6 +31,8 @@ Options:
 				**TAKE AVAILABLE MEMORY AND OUTPUT SIZE INTO ACCOUT WHILE USING THIS!**
 
 	-h, --help		Display this help
+	
+	--dry-run		Import APIs, run checks, and do nothing and exit. Can be ran without root.
 
 """
 	exit 0
@@ -67,6 +69,11 @@ do
         
         -T|--tmp)
 			OUTPUTTMP="True"
+			shift
+		;;
+		
+		--dry-run)
+			DRYRUN="True"
 			shift
 		;;
         
@@ -131,6 +138,12 @@ fi
 if [[ -z ${OUTPUTTMP} ]]
 then
 	OUTPUTTMP="False"
+fi
+
+#dry run
+if [[ -z ${DRYRUN} ]]
+then
+	DRYRUN="False"
 fi
 
 #check whether to build an image
