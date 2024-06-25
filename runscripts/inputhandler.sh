@@ -76,6 +76,11 @@ do
 			DRYRUN="True"
 			shift
 		;;
+		
+		--debug)
+			DEBUGMSG="True"
+			shift
+		;;
         
         -h|--help|?) 
 			help-msg
@@ -126,6 +131,12 @@ fi
 if [[ -z ${DRYRUN} ]]
 then
 	DRYRUN="False"
+fi
+
+#debug messages
+if [[ -z ${DEBUGMSG} ]]
+then
+	DEBUGMSG"False"
 fi
 
 #check whether to build an image

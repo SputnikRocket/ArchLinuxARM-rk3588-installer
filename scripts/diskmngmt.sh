@@ -10,11 +10,11 @@ function regen-gpt() {
     
 	sync
 
-	echo "Destroying partition table on ${DISKDEVICE}"
+	debug-output "Destroying partition table on ${DISKDEVICE} ..."
 	sgdisk -Z "${DISKDEVICE}"
 	sync
 
-	echo "Creating new partition table on ${DISKDEVICE}"
+	debug-output "Creating new partition table on ${DISKDEVICE} ..."
 	sgdisk -o "${DISKDEVICE}"
 	sync
 }
@@ -29,19 +29,19 @@ function mk-parts() {
 	sgdisk -e "${DISKDEVICE}"
 	sync
 	
-	echo "Creating partition of type 'EFI System Partition' on ${DISKPART1}"
+	debug-output "Creating partition of type 'EFI System Partition' on ${DISKPART1} ..."
 	sgdisk -n 1:0:+512M -t 1:ef00 -c 1:"ARCH_BOOT" "${DISKDEVICE}"
 	sync
 
-	echo "Creating partition of type 'Linux Filesystem' on ${DISKPART2}"
+	debug-output "Creating partition of type 'Linux Filesystem' on ${DISKPART2} ..."
 	sgdisk -n 2:0:0 -t 2:8300 -c 2:"ARCH_ROOT" "${DISKDEVICE}"
 	sync
 
-	echo "Formatting ${DISKPART1} as fat32"
+	debug-output "Formatting ${DISKPART1} as fat32 ..."
 	yes | mkfs.vfat -i "${BOOTUUID}" -F 32 "${DISKPART1}"
 	sync
 
-	echo "Formatting ${DISKPART2} as ext4"
+	debug-output "Formatting ${DISKPART2} as ext4 ..."
 	yes | mkfs.ext4 -U "${ROOTUUID}" "${DISKPART2}"
 	sync
 }
@@ -52,7 +52,7 @@ function mount-working-disks() {
 	local WORKDIR=${1}
 	local DISKDEVICE=${2}
 	
-	echo "mounting installation device..."
+	debug-output "mounting installation device ..."
 	mount "${DISKPART1}" "${WORKDIR}/${BOOTFSDIR}"
 	sync
 	
@@ -66,7 +66,7 @@ function remount-bootfs() {
 	local WORKDIR=${1}
 	local DISKDEVICE=${2}
 	
-	echo "remounting bootfs..."
+	debug-output "remounting bootfs ..."
 	umount -f "${DISKPART1}"
 	sync
 	
@@ -79,7 +79,7 @@ function umount-dltmp() {
 	
 	local WORKDIR=${1}
 	
-	sync
+	debug-output "unmounting temporary downloads dir from rootfs ..."
 	umount -f "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
 	sync
 }
@@ -89,8 +89,7 @@ function unmount-workdirs() {
 	
 	local WORKDIR=${1}
 
-	echo "unmounting installation..."
-	sync
+	debug-output "unmounting installation ..."
 	umount --recursive --force --lazy "${WORKDIR}/${ROOTFSDIR}/dev"
 	umount --recursive --force "${WORKDIR}/${ROOTFSDIR}"
 	sync
@@ -114,6 +113,7 @@ function check-nvme-mmc() {
 #set UUIDS for partitions
 function set-partuuids() {
 	
+	debug-output "setting partition UUIDs ..."
 	BOOTUUID=$(uuidgen | head -c8)
 	ROOTUUID=$(uuidgen)
 }
@@ -123,7 +123,7 @@ function setup-chroot() {
 	
 	local WORKDIR=${1}
 	
-	sync
+	debug-output "Mounting temporary filesytems and copying files needed from host for chroot ..."
 	mount -t proc /proc ${WORKDIR}/${ROOTFSDIR}/proc/
 	sync
 	mount -t sysfs /sys ${WORKDIR}/${ROOTFSDIR}/sys/

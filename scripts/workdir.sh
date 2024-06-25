@@ -8,6 +8,7 @@ function setup-workdir() {
 
 	local WORKDIR=${1}
     
+    debug-output "Creating working directories ..."
     if [ ! -e "${WORKDIR}/${ROOTFSDIR}" ]
     then
 		mkdir -p "${WORKDIR}/${ROOTFSDIR}"
@@ -24,20 +25,22 @@ function setup-workdir() {
 	fi
 
 	if [ ! -e "${WORKDIR}/${PKGCACHEDIR}" ]
-        then
-                mkdir -p "${WORKDIR}/${PKGCACHEDIR}"
-        fi
+    then
+		mkdir -p "${WORKDIR}/${PKGCACHEDIR}"
+    fi
 
 	if [ ! -e "${OUTDIR}" ]
-        then
-                mkdir -p "${OUTDIR}"
-        fi
+    then
+		mkdir -p "${OUTDIR}"
+    fi
 }
 
 #clean up working directory
 function clean-workdir() {
 	
 	local WORKDIR=${1}
+	
+	debug-output "Removing working directories ..."
 	rm -rf "${WORKDIR}"
 }
 
@@ -46,8 +49,8 @@ function mount-dltmp() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "mounting temporary download directories to rootfs ..."
 	mkdir -p "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
-    
 	mount -o bind "${WORKDIR}/${DLTMP}" "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"	
 	mount -o bind "${WORKDIR}/${PKGCACHEDIR}" "${WORKDIR}/${ROOTFSDIR}/var/cache/pacman/pkg"
 }

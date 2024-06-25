@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Generic Image
         run: |
-          sudo bash ./run.sh --device find --platform generic-rk3588 --profile minimal --image --tmp 
+          sudo bash ./run.sh --device find --platform generic-rk3588 --profile minimal --image --tmp --debug 
 
       - name: Upload
         uses: actions/upload-artifact@v4.3.1

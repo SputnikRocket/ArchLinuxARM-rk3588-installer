@@ -11,7 +11,10 @@ function debug-output() {
 	local GREEN="\e[32m"
 	local ENDCOLOR="\e[0m"
 	
-	echo -e "[${YELLOW}DEBUG${ENDCOLOR}] ${GREEN}${OUTPUT}${ENDCOLOR}"
+	if [[ ${DEBUGMSG} == "True" ]]
+	then
+		echo -e "[${YELLOW}DEBUG${ENDCOLOR}] ${GREEN}${OUTPUT}${ENDCOLOR}"
+	fi
 }
 
 #check if specified file exists or not
@@ -20,10 +23,10 @@ function check-if-exists() {
 	local FILE=${1}
 	if [ -e ${FILE} ]
 	then
-		echo "${FILE} exists!"
+		debug-output "${FILE} exists!"
 		return 0
 	else
-		echo "${FILE} does not exist!"
+		debug-output "${FILE} does not exist!"
 		return 1
 	fi
 }
@@ -34,7 +37,7 @@ function get-file() {
 	local WORKDIR=${1}
 	local URL=${2}
 	
-	echo "getting file from ${URL}..."
+	debug-output "getting file from ${URL} ..."
 	cd ${WORKDIR}/${DLTMP}
     
 	aria2c -x 8 --auto-file-renaming=false --continue=true ${URL}
@@ -47,11 +50,11 @@ function unpack-rootfs() {
 	local WORKDIR=${1}
 	local TARBALL=${2}
 	
-	echo "Extracting rootfs to ${WORKDIR}/${ROOTFSDIR}..."
+	debug-output "Extracting rootfs to ${WORKDIR}/${ROOTFSDIR} ..."
 	bsdtar -xpf "${TARBALL}" -C "${WORKDIR}/${ROOTFSDIR}"
 	sync
 
-	echo "Moving boot files to ${WORKDIR}/${NEWBOOTFSDIR}"
+	debug-output "Moving boot files to ${WORKDIR}/${NEWBOOTFSDIR} ..."
 	mv ${WORKDIR}/${NEWBOOTFSDIR}/* ${WORKDIR}/${BOOTFSDIR}/
 	sync
 }
@@ -63,7 +66,7 @@ function set-locale() {
 	local SETLOCALE=${2}
 	local ENCODING=${3}
 	
-	echo "setting installation locale..."
+	debug-output "setting installation locale ..."
 	echo "LANG=${SETLOCALE}" > "${WORKDIR}/${ROOTFSDIR}/etc/locale.conf"
 	
 	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
@@ -76,7 +79,7 @@ function setup-mkinitcpio() {
 	
 	local WORKDIR=${1}
 	
-	echo "generating initramfs..."
+	debug-output "generating initramfs ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/mkinitcpio -P	
 }
 
@@ -87,7 +90,7 @@ function mkfstab() {
 	BOOTFSTABUUID=$(echo "${BOOTUUID^^}" | sed 's/./&-/4')
 	ROOTFSTABUUID=${ROOTUUID,,}
 	
-	echo "generating fstab..."
+	debug-output "generating fstab ..."
 	rm ${WORKDIR}/${ROOTFSDIR}/etc/fstab
 	echo "# <file system>     <mount point>  <type>  <options>   <dump>  <fsck>" >>  ${WORKDIR}/${ROOTFSDIR}/etc/fstab
 	echo "UUID=${BOOTFSTABUUID}	/boot	vfat	defaults	0	2" >> ${WORKDIR}/${ROOTFSDIR}/etc/fstab
@@ -100,6 +103,7 @@ function clean-configs() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "Cleaning up install ..."
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/.??*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/log/pacman.log
@@ -115,7 +119,7 @@ function systemd-enable() {
 	local WORKDIR=${1}
 	local UNIT=${2}
 	
-	echo "enabling ${UNIT}"
+	debug-output "enabling ${UNIT} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl enable ${UNIT}
 }
 
@@ -125,10 +129,8 @@ function systemd-disable() {
 	local WORKDIR=${1}
 	local UNIT=${2}
 	
-	echo "disabling ${UNIT}"
-	sync
+	debug-output "disabling ${UNIT} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl disable ${UNIT}
-	sync
 }
 
 #apply overlay
@@ -137,6 +139,7 @@ function apply-overlay() {
 	local WORKDIR=${1}
 	local OVERLAY=${2}
 	
+	debug-output "copying overlay ${OVERLAY} onto rootfs ..."
 	cp -rf ${OVERLAY}/* ${WORKDIR}/${ROOTFSDIR}/
 } 
 
@@ -145,6 +148,7 @@ function set-profile() {
 	
 	local PROFILE=${1}
 	
+	debug-output "sourcing profile ${PROFILEDIR}/${PROFILE}/install.sh ..."
 	source ${PROFILEDIR}/${PROFILE}/install.sh
 }
 
@@ -153,6 +157,7 @@ function set-platform() {
 	
 	local PLATFORM=${1}
 	
+	debug-output "sourcing platform ${PLATFORMDIR}/${PLATFORM}/install.sh ..."
 	source ${PLATFORMDIR}/${PLATFORM}/install.sh
 }
 
@@ -162,6 +167,7 @@ function install-qemu-chroot() {
 	local WORKDIR=${1}
 	local HOSTQEMU=$(which qemu-aarch64-static)
 	
+	debug-output "Copying host QEMU to rootfs ..."
 	cp -rf ${HOSTQEMU} ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
 }
 	
@@ -171,14 +177,14 @@ function set-hostname() {
 	local WORKDIR=${1}
 	local SETHOSTNAME=${2}
 	
-	echo "Setting Hostname to ${SETHOSTNAME}"
+	debug-output "Setting Hostname to ${SETHOSTNAME} ..."
 	echo "${SETHOSTNAME}" > "${WORKDIR}/${ROOTFSDIR}/etc/hostname"
 }
 
 #mount output directory as tmpfs
 function mount-tmp-output() {
 	
-	echo "Mounting output directory as tmpfs..."
+	debug-output "Mounting output directory as tmpfs ..."
 	mount -t tmpfs tmpfs ${OUTDIR}
 }
 

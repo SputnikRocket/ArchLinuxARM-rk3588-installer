@@ -8,6 +8,7 @@ function pac-update() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "Updating repo package lists ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Sy --noconfirm
 }
 
@@ -16,8 +17,8 @@ function pac-init() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "Initializing pacman keyring ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/pacman-key --init
-	
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/pacman-key --populate
 }
 
@@ -27,6 +28,7 @@ function pac-install() {
 	local WORKDIR=${1}
 	local PACKAGE=${2}
 	
+	debug-output "Installing package ${PACKAGE} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -S "${PACKAGE}"  --noconfirm --overwrite \* --disable-download-timeout
 }
 
@@ -36,6 +38,7 @@ function pac-install-local() {
 	local WORKDIR=${1}
 	local LOCALPKG=${2}
 	
+	debug-output "Installing local package /${DLTMP}/${LOCALPKG} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -U --noconfirm --overwrite \* "/${DLTMP}/${LOCALPKG}"
 }
 
@@ -45,6 +48,7 @@ function pac-remove() {
 	local WORKDIR=${1}
 	local PACKAGE=${2}
 	
+	debug-output "Removing package ${PACKAGE} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Rn "${PACKAGE}"  --noconfirm
 }
 
@@ -54,6 +58,7 @@ function pac-remove-list() {
 	local WORKDIR=${1}
 	local PKGLIST=${2}
 	
+	debug-output "Removing packages specified in ${PKGLIST} ..."
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Rn --noconfirm < ${PKGLIST}
 }
 
@@ -62,6 +67,7 @@ function pac-upgrade() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "Fully upgrading installed packages ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Syyu --noconfirm
 }
 
@@ -70,6 +76,7 @@ function pac-clean() {
 	
 	local WORKDIR=${1}
 	
+	debug-output "Cleaning pacman cache ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Scc --noconfirm
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/cache/pacman/pkg/*
 }
@@ -80,6 +87,7 @@ function pac-forceremove() {
 	local WORKDIR=${1}
 	local PACKAGE=${2}
 	
+	debug-output "Forcefully removing package ${PACKAGE} ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Rdd "${PACKAGE}"  --noconfirm
 }
 
@@ -89,6 +97,7 @@ function pac-install-list() {
 	local WORKDIR=${1}
 	local PKGLIST=${2}
 	
+	debug-output "Installing packages specified in ${PKGLIST} ..."
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -S --noconfirm < ${PKGLIST}
 }
 
@@ -98,6 +107,7 @@ function pac-upgrade-list() {
 	local WORKDIR=${1}
 	local PKGLIST=${2}
 	
+	debug-output "fully upgrading installed packages & installing packages specified in ${PKGLIST} ..."
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Syyu --noconfirm < ${PKGLIST}
 }
 
@@ -108,7 +118,7 @@ function pac-add-key() {
 	local WORKDIR=${1}
 	local PACKEY=${2}
 	
-	echo "Adding pacman key ${PACKEY}"
+	debug-output "Adding pacman key ${PACKEY}"
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/pacman-key --recv-keys "${PACKEY}"
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/pacman-key --lsign "${PACKEY}"
 }
@@ -120,7 +130,7 @@ function pac-add-repo() {
 	local REPONAME=${2}
 	local REPOURL=${3}
 	
-	echo "Adding repo ${REPONAME} ${REPOURL}"
+	debug-output "Adding repo ${REPONAME} ${REPOURL}"
 	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
 	echo "${REPONAME}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
 	echo "SigLevel = Never" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
