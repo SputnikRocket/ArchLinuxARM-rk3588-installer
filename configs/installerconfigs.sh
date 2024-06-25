@@ -25,8 +25,3 @@ ROOTFS_TARBALL="ArchLinuxARM-aarch64-latest.tar.gz"
 
 #Grub efi directory: DO NOT CHANGE THIS.
 EFIDIR="boot"
-
-#image filename prefixes
-IMGPREFIX="ArchLinuxARM"
-
-

@@ -5,18 +5,14 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 
 #setup disk partitioning
 
-#check for shallow build
-if [ ${SHALLOW} = "False" ]
-then
-	#regenerate gpt
-	regen-gpt "${DISKDEVICE}"
-	sync
+#regenerate gpt
+regen-gpt "${DISKDEVICE}"
+sync
  
-	#make partitions
-	mk-parts "${DISKDEVICE}"
-	sync
-	
-fi
+#make partitions
+mk-parts "${DISKDEVICE}"
+sync
+
 #mount disk to workdirs
 mount-working-disks "${WORKDIR}" "${DISKDEVICE}"
 sync

@@ -110,24 +110,10 @@ fi
 check-if-exists "${DISKDEVICE}"
 sync
 
-#check if profile exists and apply
-check-if-exists "${PROFILEDIR}/${PROFILE}"
-set-profile "${PROFILE}"
-
-#check if platform exists and apply
-check-if-exists "${PLATFORMDIR}/${PLATFORM}"
-set-platform "${PLATFORM}"
-
 #check whether to not clean up the workdir and use cached downloads
 if [[ -z ${DLCACHE} ]]
 then
 	DLCACHE="False"
-fi
-
-#shallow build the images
-if [[ -z ${SHALLOW} ]]
-then
-	SHALLOW="False"
 fi
 
 #check whether to mount the output folder as tmpfs

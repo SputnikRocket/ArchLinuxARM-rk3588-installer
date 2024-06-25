@@ -4,18 +4,20 @@ set -eE
 trap 'echo Error: in $0 on line $LINENO' ERR
 
 source configs/installerconfigs.sh
-source configs/userconfigs.sh
 
 source scripts/workdir.sh
 source scripts/general.sh
 source scripts/diskmngmt.sh
 source scripts/pacman.sh
-source scripts/bootloadersetup.sh
+source scripts/bootloader.sh
 source scripts/loopdev.sh
 
 source runscripts/inputhandler.sh
-
 source runscripts/checkhost.sh
+source runscripts/import-prof-plat.sh
+
+source configs/loopdefs.sh
+source configs/userconfigs.sh
 
 #check for dry run 
 if [[ ${DRYRUN} == "True" ]]
@@ -39,7 +41,7 @@ source runscripts/setupdisk.sh
 sync
 
 #base installation
-source runscripts/setupbase.sh
+source runscripts/setupsystem.sh
 sync
 
 #unmount disks and clean workdirs or wrap up loopdev

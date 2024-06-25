@@ -4,13 +4,9 @@ set -eE
 trap 'echo Error: in $0 on line $LINENO' ERR
 
 #remove disk image, compress and generate checksum
-#check for shallow build
-if [ ${SHALLOW} = "False" ]
-then
-	umount-dltmp "${WORKDIR}"
-	
-fi
-	
+umount-dltmp "${WORKDIR}"
+sync
+
 source runscripts/cleaninstall.sh
 sync
 

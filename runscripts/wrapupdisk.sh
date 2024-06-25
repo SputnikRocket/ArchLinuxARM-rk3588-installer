@@ -6,12 +6,8 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 #unmount and clean workdir
 
 #wrap up
-#check for shallow build
-if [ ${SHALLOW} = "False" ]
-then
-	umount-dltmp "${WORKDIR}"
-
-fi
+umount-dltmp "${WORKDIR}"
+sync
 
 source runscripts/cleaninstall.sh
 sync

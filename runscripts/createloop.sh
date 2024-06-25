@@ -11,24 +11,10 @@ then
 fi
 sync
 
-#create and mount loop
-if [ ${SHALLOW} = "False" ]
-then
-	
-	image-defs-profile-hook
-	image-defs-platform-hook
-	
-	IMAGEFILE="${IMGPREFIX}-${IMGPLATFORMNAME}-${PROFILE}-UEFI.img"
-	
-	create-img
-	
-elif [ ${SHALLOW} = "True" ]
-then 	
-	check-if-exists "${OUTDIR}/${IMGPREFIX}-Generic_RK3588-${PROFILE}-UEFI.img"
-	cp-image
-
-fi
+#create loop
+create-img
 sync
 
+#mount loop
 attach-loop ${DISKDEVICE}
 sync

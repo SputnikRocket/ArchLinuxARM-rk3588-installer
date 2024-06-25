@@ -3,6 +3,17 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
+#debug messaging
+function debug-output() {
+
+	local OUTPUT=${1}
+	local YELLOW="\e[33m"
+	local GREEN="\e[32m"
+	local ENDCOLOR="\e[0m"
+	
+	echo -e "[${YELLOW}DEBUG${ENDCOLOR}] ${GREEN}${OUTPUT}${ENDCOLOR}"
+}
+
 #check if specified file exists or not
 function check-if-exists() {
 
@@ -170,5 +181,5 @@ function mount-tmp-output() {
 	echo "Mounting output directory as tmpfs..."
 	mount -t tmpfs tmpfs ${OUTDIR}
 }
-	
+
 	
