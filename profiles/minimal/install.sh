@@ -20,10 +20,8 @@ function add-overlay-profile-hook() {
 
 function remove-pkgs-profile-hook() {
 	
-	echo ""
 	#remove packages
-	#pac-remove-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}/pkgs.remove"
-	#sync
+	PROFPKGSREMOVE="${PROFILEDIR}/${PROFILE}/pkgs.remove"
 }
 
 function add-repos-profile-hook() {
@@ -33,8 +31,7 @@ function add-repos-profile-hook() {
 function install-pkgs-profile-hook() {
 	
 	#install packages
-	pac-upgrade-list "${WORKDIR}" "${PROFILEDIR}/${PROFILE}/pkgs.install"
-	sync
+	PROFPKGSINSTALL="${PROFILEDIR}/${PROFILE}/pkgs.install"
 }
 
 function enable-services-profile-hook() {

@@ -188,4 +188,14 @@ function mount-tmp-output() {
 	mount -t tmpfs tmpfs ${OUTDIR}
 }
 
+#merge list files
+function merge-lists() {
 	
+	local LISTFILE1=${1}
+	local LISTFILE2=${2}
+	local MERGEDFILE=${3}
+	
+	debug-output "Merging ${LISTFILE1} & ${LISTFILE2} into ${MERGEDFILE}"
+	cat ${LISTFILE1} >> ${MERGEDFILE}
+	cat ${LISTFILE2} >> ${MERGEDFILE}
+}

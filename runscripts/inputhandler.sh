@@ -155,8 +155,6 @@ fi
 
 echo "continuing.."
 
-sleep 0.5
-
 #set partuuids for rest of installer
 set-partuuids
 

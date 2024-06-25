@@ -28,11 +28,18 @@ function setup-workdir() {
     then
 		mkdir -p "${WORKDIR}/${PKGCACHEDIR}"
     fi
+    
+    if [ ! -e "${WORKDIR}/${TRANSIENTDIR}" ]
+    then
+		mkdir -p "${WORKDIR}/${TRANSIENTDIR}"
+    fi
 
 	if [ ! -e "${OUTDIR}" ]
     then
 		mkdir -p "${OUTDIR}"
     fi
+    
+    
 }
 
 #clean up working directory

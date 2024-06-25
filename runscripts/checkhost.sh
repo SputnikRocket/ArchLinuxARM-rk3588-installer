@@ -9,11 +9,11 @@ HOSTARCH=$(uname -m)
 if [[ ${HOSTARCH} == "aarch64" ]]
 then
 	CHROOT_EXEC=""
-	echo "Host arch is ${HOSTARCH}, building native"
+	debug-output "Host arch is ${HOSTARCH}, building native"
 	
 else
 	CHROOT_EXEC="qemu-aarch64-static"
-	echo "Host arch is ${HOSTARCH}, using QEMU usermode emulation"
+	debug-output "Host arch is ${HOSTARCH}, using QEMU usermode emulation"
 
 fi
 

@@ -21,8 +21,7 @@ function add-overlay-platform-hook() {
 function remove-pkgs-platform-hook() {
 	
 	#remove packages
-	pac-remove-list "${WORKDIR}" "${PLATFORMDIR}/${PLATFORM}/pkgs.remove"
-	sync
+	PLATPKGSREMOVE="${PLATFORMDIR}/${PLATFORM}/pkgs.remove"
 }
 
 function add-repos-platform-hook() {
@@ -36,8 +35,7 @@ function add-repos-platform-hook() {
 function install-pkgs-platform-hook() {
 	
 	#install packages
-	pac-upgrade-list "${WORKDIR}" "${PLATFORMDIR}/${PLATFORM}/pkgs.install"
-	sync
+	PLATPKGSINSTALL="${PLATFORMDIR}/${PLATFORM}/pkgs.install"
 }
 
 function enable-services-platform-hook() {
