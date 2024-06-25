@@ -126,15 +126,23 @@ function apply-overlay() {
 	local WORKDIR=${1}
 	local OVERLAY=${2}
 	
-	cp -rf ${OVERLAYDIR}/overlay.${OVERLAY}/* ${WORKDIR}/${ROOTFSDIR}/
+	cp -rf ${OVERLAY}/* ${WORKDIR}/${ROOTFSDIR}/
 } 
 
 #install profile
-function install-profile() {
+function set-profile() {
 	
 	local PROFILE=${1}
 	
-	source ${PROFILEDIR}/${PROFILE}.profile/install.sh
+	source ${PROFILEDIR}/${PROFILE}/install.sh
+}
+
+#install platform
+function set-platform() {
+	
+	local PLATFORM=${1}
+	
+	source ${PLATFORMDIR}/${PLATFORM}/install.sh
 }
 
 # copy host qemu to chroot

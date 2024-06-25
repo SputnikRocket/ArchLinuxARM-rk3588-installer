@@ -1,3 +1,0 @@
-#sudo access for alarm user
-alarm ALL=(ALL:ALL) ALL
-

@@ -18,9 +18,9 @@ function create-img() {
 	sync
 	
 	touch "${OUTDIR}/${IMAGEFILE}"
-	truncate --size $((4*1024*1024*1024)) ${OUTDIR}/${IMAGEFILE}
+	truncate --size $((${IMGSIZE}*1024*1024*1024)) ${OUTDIR}/${IMAGEFILE}
 	dd if=/dev/zero of=${OUTDIR}/${IMAGEFILE} bs=512 count=32768 status=progress
-	truncate --size $((4*1024*1024*1024)) ${OUTDIR}/${IMAGEFILE}
+	truncate --size $((${IMGSIZE}*1024*1024*1024)) ${OUTDIR}/${IMAGEFILE}
 	sync
 }
 

@@ -44,30 +44,36 @@ then
 	mount-dltmp "${WORKDIR}"
 	sync
 
-	#apply minimal overlay for multi-threaded downloads
-	check-if-exists "${OVERLAYDIR}/overlay.minimal"
-
-	apply-overlay "${WORKDIR}" "minimal"
-	sync
-
 	#initialize pacman
 	pac-init "${WORKDIR}"
 	sync
-
-	#remove builtin kernel
-	pac-remove "${WORKDIR}" "linux-aarch64"
-	sync
 	
-	#apply profile config
-	source runscripts/applyprofiles.sh
-	sync
-
-	#install grub
-	install-grub "${WORKDIR}"
-	sync
-
-	mkconfig-grub "${WORKDIR}"
-	sync
+	#add overlays
+	add-overlay-profile-hook
+	add-overlay-platform-hook
+	
+	#remove packages
+	remove-pkgs-profile-hook
+	remove-pkgs-platform-hook
+	
+	#add repos
+	add-repos-profile-hook
+	add-repos-platform-hook
+	
+	#install packages
+	install-pkgs-profile-hook
+	install-pkgs-platform-hook
+	
+	#enable services
+	enable-services-profile-hook
+	enable-services-platform-hook
+	
+	#disable services
+	disable-services-profile-hook
+	disable-services-platform-hook
+	
+	#bootlaoder setup
+	bootloader-platform-hook
 
 fi
 sync

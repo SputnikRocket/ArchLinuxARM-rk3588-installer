@@ -14,6 +14,12 @@ sync
 #create and mount loop
 if [ ${SHALLOW} = "False" ]
 then
+	
+	image-defs-profile-hook
+	image-defs-platform-hook
+	
+	IMAGEFILE="${IMGPREFIX}-${IMGPLATFORMNAME}-${PROFILE}-UEFI.img"
+	
 	create-img
 	
 elif [ ${SHALLOW} = "True" ]

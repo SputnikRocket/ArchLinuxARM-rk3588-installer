@@ -1,11 +1,10 @@
-#/bin/bash
+#!/bin/bash
 
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
 source configs/installerconfigs.sh
 source configs/userconfigs.sh
-source configs/boards.sh
 
 source scripts/workdir.sh
 source scripts/general.sh
@@ -56,7 +55,3 @@ sync
 
 echo "success! you may now remove ${DISKDEVICE}"
 exit 0
-
-
-
-

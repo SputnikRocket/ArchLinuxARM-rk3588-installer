@@ -18,7 +18,7 @@ Options:
 				loop, or \"find\" to automatically allocate a loop device. 
 				Loop devices can only be used with the \"--image\" option.
 
-	-B, --board <board>	Platform to install for
+	-p, --platform <platform>	Platform to install for
 
 	-P, --profile <profile>	Installation profile to use
 
@@ -47,8 +47,8 @@ do
 			shift 2
         ;;
         
-        -B|--board) 
-			BOARD=${2}
+        -p|--platform) 
+			PLATFORM=${2}
 			shift 2
         ;;
         
@@ -110,17 +110,13 @@ fi
 check-if-exists "${DISKDEVICE}"
 sync
 
-#set BOARD config based off of script arguments or interactive input	
-if [[ ${BOARD} = "none" ]]
-then
-	config-none	
-else
-	echo "not a valid choice! exiting..."
-	exit 1	
-fi
+#check if profile exists and apply
+check-if-exists "${PROFILEDIR}/${PROFILE}"
+set-profile "${PROFILE}"
 
-#check if profile exists
-check-if-exists "${PROFILEDIR}/${PROFILE}.profile"
+#check if platform exists and apply
+check-if-exists "${PLATFORMDIR}/${PLATFORM}"
+set-platform "${PLATFORM}"
 
 #check whether to not clean up the workdir and use cached downloads
 if [[ -z ${DLCACHE} ]]

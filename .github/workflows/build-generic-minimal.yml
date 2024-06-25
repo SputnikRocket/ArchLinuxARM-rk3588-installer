@@ -22,12 +22,12 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install prequisites
         run: |
-          sudo apt update && apt-get purge needrestart -y && sudo apt-get upgrade -y
+          sudo apt update && sudo apt-get purge needrestart -y && sudo apt-get upgrade -y
           sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
 
       - name: Build Generic Image
         run: |
-          sudo bash ./run.sh --device find --board none --profile minimal --image --cache --tmp 
+          sudo bash ./run.sh --device find --platform generic-rk3588 --profile minimal --image --tmp 
 
       - name: Upload
         uses: actions/upload-artifact@v4.3.1

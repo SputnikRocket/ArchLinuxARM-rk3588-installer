@@ -48,6 +48,15 @@ function pac-remove() {
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Rn "${PACKAGE}"  --noconfirm
 }
 
+#remove packages from list
+function pac-remove-list() {
+	
+	local WORKDIR=${1}
+	local PKGLIST=${2}
+	
+	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Rn --noconfirm < ${PKGLIST}
+}
+
 #pacman -Syyu
 function pac-upgrade() {
 	
@@ -91,6 +100,7 @@ function pac-upgrade-list() {
 	
 	xargs chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/pacman -Syyu --noconfirm < ${PKGLIST}
 }
+
 
 # add pacman repo key
 function pac-add-key() {

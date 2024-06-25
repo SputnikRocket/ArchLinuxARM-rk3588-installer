@@ -15,7 +15,9 @@ DLTMP="download-tmp"
 PKGCACHEDIR="pacman-pkg-cache"
 OVERLAYDIR="overlays"
 PROFILEDIR="profiles"
+PLATFORMDIR="platforms"
 OUTDIR="outputs"
+
 
 #Rootfs
 ROOTFS_URL="http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
@@ -26,4 +28,5 @@ EFIDIR="boot"
 
 #image filename prefixes
 IMGPREFIX="ArchLinuxARM"
+
 
