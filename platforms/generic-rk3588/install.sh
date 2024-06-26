@@ -3,10 +3,10 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-function image-defs-platform-hook() {
-	
-	IMGPLATFORMNAME="Generic_RK3588"
-}
+IMGPLATFORMNAME="Generic_RK3588"
+
+PLATPKGSREMOVE="${PLATFORMDIR}/${PLATFORM}/pkgs.remove"
+PLATPKGSINSTALL="${PLATFORMDIR}/${PLATFORM}/pkgs.install"
 
 function add-overlay-platform-hook() {
 	
@@ -18,24 +18,12 @@ function add-overlay-platform-hook() {
 	sync
 }
 
-function remove-pkgs-platform-hook() {
-	
-	#remove packages
-	PLATPKGSREMOVE="${PLATFORMDIR}/${PLATFORM}/pkgs.remove"
-}
-
 function add-repos-platform-hook() {
 	
 	# add kwankiu's pacman repo
 	pac-add-key "${WORKDIR}" "B669E3B56B3DC918"
 	pac-add-repo "${WORKDIR}" "[rockchip]" "Server = https://github.com/kwankiu/PKGBUILDs/releases/download/\$arch"
 	sync
-}
-
-function install-pkgs-platform-hook() {
-	
-	#install packages
-	PLATPKGSINSTALL="${PLATFORMDIR}/${PLATFORM}/pkgs.install"
 }
 
 function enable-services-platform-hook() {

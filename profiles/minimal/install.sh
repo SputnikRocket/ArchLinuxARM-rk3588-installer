@@ -3,10 +3,10 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-function image-defs-profile-hook() {
-	
-	IMGSIZE=4
-}
+IMGSIZE=4
+
+PROFPKGSREMOVE="${PROFILEDIR}/${PROFILE}/pkgs.remove"
+PROFPKGSINSTALL="${PROFILEDIR}/${PROFILE}/pkgs.install"
 
 function add-overlay-profile-hook() {
 	
@@ -18,20 +18,8 @@ function add-overlay-profile-hook() {
 	sync
 }
 
-function remove-pkgs-profile-hook() {
-	
-	#remove packages
-	PROFPKGSREMOVE="${PROFILEDIR}/${PROFILE}/pkgs.remove"
-}
-
 function add-repos-profile-hook() {
 	echo ""
-}
-
-function install-pkgs-profile-hook() {
-	
-	#install packages
-	PROFPKGSINSTALL="${PROFILEDIR}/${PROFILE}/pkgs.install"
 }
 
 function enable-services-profile-hook() {
