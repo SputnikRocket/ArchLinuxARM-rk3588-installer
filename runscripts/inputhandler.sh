@@ -136,7 +136,7 @@ fi
 #debug messages
 if [[ -z ${DEBUGMSG} ]]
 then
-	DEBUGMSG"False"
+	DEBUGMSG="False"
 fi
 
 #check whether to build an image
