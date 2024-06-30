@@ -9,6 +9,7 @@ source scripts/workdir.sh
 source scripts/general.sh
 source scripts/diskmngmt.sh
 source scripts/pacman.sh
+source scripts/services.sh
 source scripts/bootloader.sh
 source scripts/loopdev.sh
 

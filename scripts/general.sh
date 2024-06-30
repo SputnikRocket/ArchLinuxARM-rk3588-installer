@@ -113,26 +113,6 @@ function clean-configs() {
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
 }
 
-#enable a systemd service
-function systemd-enable() {
-	
-	local WORKDIR=${1}
-	local UNIT=${2}
-	
-	debug-output "enabling ${UNIT} ..."
-	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl enable ${UNIT}
-}
-
-#disable a systemd service
-function systemd-disable() {
-	
-	local WORKDIR=${1}
-	local UNIT=${2}
-	
-	debug-output "disabling ${UNIT} ..."
-	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/systemctl disable ${UNIT}
-}
-
 #apply overlay
 function apply-overlay() {
 	
