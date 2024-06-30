@@ -9,7 +9,12 @@ add-overlay-platform-hook
 
 #remove packages
 merge-lists "${PROFILE_PKGS_REMOVE}" "${PLATFORM_PKGS_REMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
-pac-remove-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
+check-if-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
+
+if [[ ${?} == 1 ]]
+then
+	pac-remove-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
+fi
 
 #add repos
 add-repos-profile-hook
@@ -17,12 +22,28 @@ add-repos-platform-hook
 
 #install packages
 merge-lists "${PROFILE_PKGS_INSTALL}" "${PLATFORM_PKGS_INSTALL}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
-pac-upgrade-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
+check-if-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
+
+if [[ ${?} == 1 ]]
+then
+	pac-upgrade-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
+fi
 
 #enable services
 merge-lists "${PROFILE_SERVICES_ENABLE}" "${PLATFORM_SERVICES_ENABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
-systemd-enable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
+check-if-empty "${WORKDIR}/${TRANSIENTDIR}/services.enable"
+
+if [[ ${?} == 1 ]]
+then
+	systemd-enable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
+fi
 
 #disable services
 merge-lists "${PROFILE_SERVICES_DISABLE}" "${PLATFORM_SERVICES_DISABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"
-systemd-disable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"
+check-if-empty "${WORKDIR}/${TRANSIENTDIR}/services.disable"
+
+if [[ ${?} == 1 ]]
+then
+	systemd-disable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"
+fi
+

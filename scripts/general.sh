@@ -10,7 +10,7 @@ function debug-output() {
 	local YELLOW="\e[33m"
 	local GREEN="\e[32m"
 	local ENDCOLOR="\e[0m"
-	
+
 	if [[ ${DEBUGMSG} == "True" ]]
 	then
 		echo -e "[${YELLOW}DEBUG${ENDCOLOR}] ${GREEN}${OUTPUT}${ENDCOLOR}"
@@ -21,12 +21,28 @@ function debug-output() {
 function check-if-exists() {
 
 	local FILE=${1}
+
 	if [ -e ${FILE} ]
 	then
 		debug-output "${FILE} exists!"
 		return 0
 	else
 		debug-output "${FILE} does not exist!"
+		return 1
+	fi
+}
+
+#check if a file is empty
+function check-if-empty() {
+
+	local FILE=${1}
+
+	if [[ -z $(grep '[^[:space:]]' ${FILE}) ]]
+	then
+		debug-output "${FILE} is empty"
+		return 0
+	else
+		debug-output "${FILE} is not empty"
 		return 1
 	fi
 }
