@@ -25,10 +25,10 @@ function check-if-exists() {
 	if [ -e ${FILE} ]
 	then
 		debug-output "${FILE} exists!"
-		FILE_EMPTY="True"
+		return 0
 	else
 		debug-output "${FILE} does not exist!"
-		FILE_EMPTY="False"
+		return 1
 	fi
 }
 
@@ -40,10 +40,10 @@ function check-if-empty() {
 	if [[ -z $(grep '[^[:space:]]' ${FILE}) ]]
 	then
 		debug-output "${FILE} is empty"
-		return 0
+		FILE_EMPTY="True"
 	else
 		debug-output "${FILE} is not empty"
-		return 1
+		FILE_EMPTY="False"
 	fi
 }
 

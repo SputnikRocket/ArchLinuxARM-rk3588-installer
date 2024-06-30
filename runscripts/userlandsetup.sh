@@ -11,7 +11,7 @@ add-overlay-platform-hook
 merge-lists "${PROFILE_PKGS_REMOVE}" "${PLATFORM_PKGS_REMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 check-if-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 
-if [[ ${FILE_EMPTY} == "FALSE" ]]
+if [[ ${FILE_EMPTY} == "False" ]]
 then
 	pac-remove-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 fi
