@@ -8,7 +8,7 @@ add-overlay-profile-hook
 add-overlay-platform-hook
 
 #remove packages
-merge-lists "${PROFPKGSREMOVE}" "${PLATPKGSREMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
+merge-lists "${PROFILE_PKGS_REMOVE}" "${PLATFORM_PKGS_REMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 pac-remove-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 
 #add repos
@@ -16,13 +16,13 @@ add-repos-profile-hook
 add-repos-platform-hook
 
 #install packages
-merge-lists "${PROFPKGSINSTALL}" "${PLATPKGSINSTALL}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
+merge-lists "${PROFILE_PKGS_INSTALL}" "${PLATFORM_PKGS_INSTALL}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
 pac-upgrade-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
 
 #enable services
-enable-services-profile-hook
-enable-services-platform-hook
+merge-lists "${PROFILE_SERVICES_ENABLE}" "${PLATFORM_SERVICES_ENABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
+systemd-enable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
 
 #disable services
-disable-services-profile-hook
-disable-services-platform-hook
+merge-lists "${PROFILE_SERVICES_DISABLE}" "${PLATFORM_SERVICES_DISABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"
+systemd-disable-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"

@@ -3,10 +3,16 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
+#image file settings
 IMGSIZE=4
 
-PROFPKGSREMOVE="${PROFILEDIR}/${PROFILE}/pkgs.remove"
-PROFPKGSINSTALL="${PROFILEDIR}/${PROFILE}/pkgs.install"
+#install and remove packages in these lists
+PROFILE_PKGS_REMOVE="${PROFILEDIR}/${PROFILE}/pkgs.remove"
+PROFILE_PKGS_INSTALL="${PROFILEDIR}/${PROFILE}/pkgs.install"
+
+#enable and disable services in these lists
+PROFILE_SERVICES_ENABLE="${PROFILEDIR}/${PROFILE}/services.enable"
+PROFILE_SERVICES_DISABLE="${PROFILEDIR}/${PROFILE}/services.disable"
 
 function add-overlay-profile-hook() {
 	
@@ -19,16 +25,5 @@ function add-overlay-profile-hook() {
 }
 
 function add-repos-profile-hook() {
-	echo ""
-}
-
-function enable-services-profile-hook() {
-	
-	#enable services
-	systemd-enable "${WORKDIR}" "resize-filesystem.service"
-	sync
-}
-
-function disable-services-profile-hook() {
 	echo ""
 }
