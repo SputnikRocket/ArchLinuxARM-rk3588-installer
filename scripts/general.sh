@@ -25,10 +25,10 @@ function check-if-exists() {
 	if [ -e ${FILE} ]
 	then
 		debug-output "${FILE} exists!"
-		return 0
+		FILE_EMPTY="True"
 	else
 		debug-output "${FILE} does not exist!"
-		return 1
+		FILE_EMPTY="False"
 	fi
 }
 
