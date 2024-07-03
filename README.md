@@ -2,7 +2,7 @@
 
 [![Total Github Downloads](https://img.shields.io/github/downloads/SputnikRocket/ArchLinuxARM-rk3588-installer/total.svg?&color=E95420&label=Total%20Downloads)](https://github.com/SputnikRocket/ArchLinuxARM-rk3588-installer/releases)
 
-Arch Linux ARM for rk3588 SBCs, such as the Orange Pi 5(+,B), Indiedroid Nova, Radxa Rock 5(A,B), and others using edk2 UEFI.
+Arch Linux ARM image builder and installer for aarch64 UEFI devices, focusing on rk3588.
 
 requires [edk2-porting/edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588) installed on SPI flash or an sdcard to boot.
 
