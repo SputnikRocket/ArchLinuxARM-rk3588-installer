@@ -139,22 +139,13 @@ function apply-overlay() {
 	cp -rf ${OVERLAY}/* ${WORKDIR}/${ROOTFSDIR}/
 } 
 
-#install profile
-function set-profile() {
+#source config or runscript
+function source-script() {
 	
-	local PROFILE=${1}
+	local SRCSCRIPT=${1}
 	
-	debug-output "sourcing profile ${PROFILEDIR}/${PROFILE}/install.sh ..."
-	source ${PROFILEDIR}/${PROFILE}/install.sh
-}
-
-#install platform
-function set-platform() {
-	
-	local PLATFORM=${1}
-	
-	debug-output "sourcing platform ${PLATFORMDIR}/${PLATFORM}/install.sh ..."
-	source ${PLATFORMDIR}/${PLATFORM}/install.sh
+	debug-output "sourcing script ${SRCSCRIPT} ..."
+	source ${SRCSCRIPT}
 }
 
 # copy host qemu to chroot

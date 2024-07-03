@@ -21,6 +21,8 @@ Options:
 	-p, --platform <platform>	Platform to install for
 
 	-P, --profile <profile>	Installation profile to use
+	
+	-d, --distro <distro>	Arch-based distro to build for, defaults to plain Arch Linux ARM.
 
 	-C, --cache		Cache downloaded files and do not clean up working directories
 
@@ -54,6 +56,11 @@ do
         
         -P|--profile) 
 			PROFILE=${2}
+			shift 2
+        ;;
+        
+        -d|--distro) 
+			DISTRO=${2}
 			shift 2
         ;;
         
@@ -137,6 +144,12 @@ fi
 if [[ -z ${DEBUGMSG} ]]
 then
 	DEBUGMSG="False"
+fi
+
+#distro to build, defaults to arch
+if [[ -z ${DISTRO} ]]
+then
+	DISTRO="arch"
 fi
 
 #check whether to build an image

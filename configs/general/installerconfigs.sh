@@ -18,9 +18,5 @@ PLATFORMDIR="platforms"
 OUTDIR="outputs"
 TRANSIENTDIR="installer-tmp"
 
-#Rootfs
-ROOTFS_URL="http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
-ROOTFS_TARBALL="ArchLinuxARM-aarch64-latest.tar.gz"
-
 #Grub efi directory: DO NOT CHANGE THIS.
 EFIDIR="boot"

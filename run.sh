@@ -3,7 +3,7 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-source configs/installerconfigs.sh
+source configs/general/installerconfigs.sh
 
 source scripts/workdir.sh
 source scripts/general.sh
@@ -15,10 +15,10 @@ source scripts/loopdev.sh
 
 source runscripts/inputhandler.sh
 source runscripts/checkhost.sh
-source runscripts/import-prof-plat.sh
+source runscripts/importconfscripts.sh
 
-source configs/loopdefs.sh
-source configs/userconfigs.sh
+source configs/general/loopdefs.sh
+source configs/general/userconfigs.sh
 
 #check for dry run 
 if [[ ${DRYRUN} == "True" ]]
