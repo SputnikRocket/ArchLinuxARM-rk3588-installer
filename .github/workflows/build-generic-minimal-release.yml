@@ -33,7 +33,7 @@ jobs:
         with:
             tag: "release"
             name: "release"
-            artifacts: "./outputs/ArchLinuxARM-Generic_RK3588-minimal-UEFI.img.xz*"
+            artifacts: "./outputs/*.img.xz*"
             makeLatest: false
             prerelease: true
             allowUpdates: true

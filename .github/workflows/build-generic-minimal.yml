@@ -33,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: ArchLinuxARM-Generic_RK3588-minimal-UEFI
-          path: ./outputs/ArchLinuxARM-Generic_RK3588-minimal-UEFI.img.xz*
+          path: ./outputs/*.img.xz*
           if-no-files-found: error
