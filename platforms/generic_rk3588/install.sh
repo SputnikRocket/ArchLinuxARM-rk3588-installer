@@ -7,12 +7,12 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 IMGPLATFORMNAME="Generic_RK3588"
 
 #install and remove packages in these lists
-PLATFORM_PKGS_REMOVE="${PLATFORMDIR}/${PLATFORM}/pkgs.remove"
-PLATFORM_PKGS_INSTALL="${PLATFORMDIR}/${PLATFORM}/pkgs.install"
+PLATFORM_PKGS_REMOVE="${PLATFORMDIR}/${PLATFORM}/packages/${DISTRO}/pkgs.remove"
+PLATFORM_PKGS_INSTALL="${PLATFORMDIR}/${PLATFORM}/packages/${DISTRO}/pkgs.install"
 
 #enable and disable services in these lists
-PLATFORM_SERVICES_ENABLE="${PLATFORMDIR}/${PLATFORM}/services.enable"
-PLATFORM_SERVICES_DISABLE="${PLATFORMDIR}/${PLATFORM}/services.disable"
+PLATFORM_SERVICES_ENABLE="${PLATFORMDIR}/${PLATFORM}/services/${INIT_SYS}/services.enable"
+PLATFORM_SERVICES_DISABLE="${PLATFORMDIR}/${PLATFORM}/services/${INIT_SYS}/services.disable"
 
 function add-overlay-platform-hook() {
 	
