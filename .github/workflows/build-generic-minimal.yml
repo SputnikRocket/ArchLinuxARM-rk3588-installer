@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    strategy:
+        matrix:
+          profile:
+            - minimal
+          platform:
+            - generic_rk3588
+          distro:
+            - arch
+            - artix_runit
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -25,13 +34,13 @@ jobs:
           sudo apt update && sudo apt-get purge needrestart -y && sudo apt-get upgrade -y
           sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
 
-      - name: Build Generic Image
+      - name: Build Image
         run: |
-          sudo bash ./run.sh --device find --platform generic_rk3588 --profile minimal --distro arch --image --tmp --debug 
+          sudo bash ./run.sh --device find --platform ${{ matrix.platform }} --profile ${{ matrix.profile }} --distro ${{ matrix.distro }} --image --tmp --debug 
 
       - name: Upload
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: ArchLinuxARM-Generic_RK3588-minimal-UEFI
-          path: ./outputs/*.img.xz*
+          name: ${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi
+          path: ./outputs/${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi.img.xz*
           if-no-files-found: error

@@ -3,9 +3,6 @@
 set -eE 
 trap 'echo Error: in $0 on line $LINENO' ERR
 
-#Image file settings
-IMG_PREFIX="ArchLinuxARM"
-
 #Init to use
 INIT_SYS="systemd"
 
