@@ -9,7 +9,7 @@ add-overlay-platform-hook
 
 #remove packages
 merge-lists "${PROFILE_PKGS_REMOVE}" "${PLATFORM_PKGS_REMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
-check-if-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
+check-file-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 
 if [[ ${FILE_EMPTY} == "False" ]]
 then
@@ -26,7 +26,7 @@ pac-upgrade-list "${WORKDIR}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.install"
 
 #enable services
 merge-lists "${PROFILE_SERVICES_ENABLE}" "${PLATFORM_SERVICES_ENABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.enable"
-check-if-empty "${WORKDIR}/${TRANSIENTDIR}/services.enable"
+check-file-empty "${WORKDIR}/${TRANSIENTDIR}/services.enable"
 
 if [[ ${FILE_EMPTY} == "False" ]]
 then
@@ -35,7 +35,7 @@ fi
 
 #disable services
 merge-lists "${PROFILE_SERVICES_DISABLE}" "${PLATFORM_SERVICES_DISABLE}" "${WORKDIR}/${TRANSIENTDIR}/services.disable"
-check-if-empty "${WORKDIR}/${TRANSIENTDIR}/services.disable"
+check-file-empty "${WORKDIR}/${TRANSIENTDIR}/services.disable"
 
 if [[ ${FILE_EMPTY} == "False" ]]
 then

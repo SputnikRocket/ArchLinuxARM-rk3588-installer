@@ -16,11 +16,15 @@ PLATFORM_SERVICES_DISABLE="${PLATFORMDIR}/${PLATFORM}/services.disable"
 
 function add-overlay-platform-hook() {
 	
-	#check if overlays exist before apply
+	#check if overlays exist and are not empty before apply
 	check-if-exists "${PLATFORMDIR}/${PLATFORM}/overlay"
+	check-dir-empty "${PLATFORMDIR}/${PLATFORM}/overlay"
 	
 	#apply overlay
-	apply-overlay "${WORKDIR}" "${PLATFORMDIR}/${PLATFORM}/overlay"
+	if [[ ${DIR_EMPTY} == "False" ]]
+	then
+		apply-overlay "${WORKDIR}" "${PLATFORMDIR}/${PLATFORM}/overlay"
+	fi
 	sync
 }
 

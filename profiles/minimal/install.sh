@@ -16,11 +16,15 @@ PROFILE_SERVICES_DISABLE="${PROFILEDIR}/${PROFILE}/services.disable"
 
 function add-overlay-profile-hook() {
 	
-	#check if overlays exist before apply
+	#check if overlays exist and are not empty before apply
 	check-if-exists "${PROFILEDIR}/${PROFILE}/overlay"
+	check-dir-empty "${PROFILEDIR}/${PROFILE}/overlay"
 	
 	#apply overlay
-	apply-overlay "${WORKDIR}" "${PROFILEDIR}/${PROFILE}/overlay"
+	if [[ ${DIR_EMPTY} == "False" ]]
+	then
+		apply-overlay "${WORKDIR}" "${PROFILEDIR}/${PROFILE}/overlay"
+	fi
 	sync
 }
 

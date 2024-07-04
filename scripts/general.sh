@@ -33,7 +33,7 @@ function check-if-exists() {
 }
 
 #check if a file is empty
-function check-if-empty() {
+function check-file-empty() {
 
 	local FILE=${1}
 
@@ -44,6 +44,21 @@ function check-if-empty() {
 	else
 		debug-output "${FILE} is not empty"
 		FILE_EMPTY="False"
+	fi
+}
+
+#check if a directory is empty
+function check-dir-empty() {
+
+	local DIRECTORY=${1}
+
+	if [[ -z $(ls "${DIRECTORY}/") ]]
+	then
+		debug-output "${FILE} is empty"
+		DIR_EMPTY="True"
+	else
+		debug-output "${FILE} is not empty"
+		DIR_EMPTY="False"
 	fi
 }
 
