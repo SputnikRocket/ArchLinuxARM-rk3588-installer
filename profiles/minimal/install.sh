@@ -14,20 +14,7 @@ PROFILE_PKGS_INSTALL="${PROFILEDIR}/${PROFILE}/packages/${DISTRO}/pkgs.install"
 PROFILE_SERVICES_ENABLE="${PROFILEDIR}/${PROFILE}/services/${INIT_SYS}/services.enable"
 PROFILE_SERVICES_DISABLE="${PROFILEDIR}/${PROFILE}/services/${INIT_SYS}/services.disable"
 
-function add-overlay-profile-hook() {
-	
-	#check if overlays exist and are not empty before apply
-	check-if-exists "${PROFILEDIR}/${PROFILE}/overlay"
-	check-dir-empty "${PROFILEDIR}/${PROFILE}/overlay"
-	
-	#apply overlay
-	if [[ ${DIR_EMPTY} == "False" ]]
-	then
-		apply-overlay "${WORKDIR}" "${PROFILEDIR}/${PROFILE}/overlay"
-	fi
-	sync
-}
-
+#repos to add
 function add-repos-profile-hook() {
 	echo ""
 }
