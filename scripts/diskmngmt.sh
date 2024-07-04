@@ -53,7 +53,7 @@ function mount-working-disks() {
 	local DISKDEVICE=${2}
 	
 	debug-output "mounting installation device ..."
-	mount "${DISKPART1}" "${WORKDIR}/${BOOTFSDIR}"
+	mount -o discard "${DISKPART1}" "${WORKDIR}/${BOOTFSDIR}"
 	sync
 	
 	mount -o discard "${DISKPART2}" "${WORKDIR}/${ROOTFSDIR}"
@@ -67,10 +67,10 @@ function remount-bootfs() {
 	local DISKDEVICE=${2}
 	
 	debug-output "remounting bootfs ..."
-	umount -f "${DISKPART1}"
+	umount "${DISKPART1}"
 	sync
 	
-	mount "${DISKPART1}" "${WORKDIR}/${NEWBOOTFSDIR}"
+	mount -o discard "${DISKPART1}" "${WORKDIR}/${NEWBOOTFSDIR}"
 	sync
 }
 
@@ -80,7 +80,7 @@ function umount-dltmp() {
 	local WORKDIR=${1}
 	
 	debug-output "unmounting temporary downloads dir from rootfs ..."
-	umount -f "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
+	umount "${WORKDIR}/${ROOTFSDIR}/${DLTMP}"
 	sync
 }
 
@@ -90,8 +90,8 @@ function unmount-workdirs() {
 	local WORKDIR=${1}
 
 	debug-output "unmounting installation ..."
-	umount --recursive --force --lazy "${WORKDIR}/${ROOTFSDIR}/dev"
-	umount --recursive --force "${WORKDIR}/${ROOTFSDIR}"
+	fuser --mount "${WORKDIR}/${ROOTFSDIR}/dev" --kill
+	umount --recursive "${WORKDIR}/${ROOTFSDIR}"
 	sync
 }
 
