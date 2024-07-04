@@ -54,10 +54,10 @@ function check-dir-empty() {
 
 	if [[ -z $(ls "${DIRECTORY}/") ]]
 	then
-		debug-output "${FILE} is empty"
+		debug-output "${DIRECTORY} is empty"
 		DIR_EMPTY="True"
 	else
-		debug-output "${FILE} is not empty"
+		debug-output "${DIRECTORY} is not empty"
 		DIR_EMPTY="False"
 	fi
 }
