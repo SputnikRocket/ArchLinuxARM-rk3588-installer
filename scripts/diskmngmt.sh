@@ -56,7 +56,7 @@ function mount-working-disks() {
 	mount "${DISKPART1}" "${WORKDIR}/${BOOTFSDIR}"
 	sync
 	
-	mount "${DISKPART2}" "${WORKDIR}/${ROOTFSDIR}"
+	mount -o discard "${DISKPART2}" "${WORKDIR}/${ROOTFSDIR}"
 	sync
 }
 
