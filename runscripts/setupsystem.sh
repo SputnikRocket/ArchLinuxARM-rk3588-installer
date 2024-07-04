@@ -20,11 +20,9 @@ sync
 #copy qemu to chroot if not aarch64
 if [[ ${HOSTARCH} == "aarch64" ]]
 then
-	echo ""
-	
+	echo ""	
 else
-	install-qemu-chroot "${WORKDIR}"
-	
+	install-qemu-chroot "${WORKDIR}"	
 fi
 
 #set some settings
@@ -46,8 +44,5 @@ source runscripts/userlandsetup.sh
 #bootloader setup
 source runscripts/bootloadersetup.sh
 
-sync
-
 #make fstab
 mkfstab "${WORKDIR}"
-

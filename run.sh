@@ -28,25 +28,20 @@ fi
 
 #prepare work and download files
 source runscripts/prepdownload.sh
-sync
 
 #if create loop is true, create and attach loop
 if [[ ${IMGBUILD} = "True" ]]
 then
 	source runscripts/createloop.sh
 fi
-sync
 
 #setup disk
 source runscripts/setupdisk.sh
-sync
 
 #base installation
 source runscripts/setupsystem.sh
-sync
 
 #unmount disks and clean workdirs or wrap up loopdev
 source runscripts/wrapupdisk.sh
-sync
 
 exit 0

@@ -41,7 +41,7 @@ Options:
 }
 
 #get flags
-while [ "$#" -gt 0 ]
+while [[ "$#" -gt 0 ]]
 do
     case "${1}" in
         -D|--device) 
@@ -121,6 +121,17 @@ fi
 #Check if specified disk exists
 check-if-exists "${DISKDEVICE}"
 sync
+
+#check if profile and platform are set
+if [[ -z ${PROFILE} ]]
+then
+	echo "Error: PROFILE is not set"
+fi
+
+if [[ -z ${PLATFORM} ]]
+then
+	echo "Error: PLATFORM is not set"
+fi
 
 #check whether to not clean up the workdir and use cached downloads
 if [[ -z ${DLCACHE} ]]

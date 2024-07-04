@@ -7,8 +7,6 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 function regen-gpt() {
 
 	local DISKDEVICE=${1}
-    
-	sync
 
 	debug-output "Destroying partition table on ${DISKDEVICE} ..."
 	sgdisk -Z "${DISKDEVICE}"
@@ -23,8 +21,6 @@ function regen-gpt() {
 function mk-parts() {
 	
 	local DISKDEVICE=${1}
-	
-	sync
 	
 	sgdisk -e "${DISKDEVICE}"
 	sync

@@ -7,9 +7,8 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 if [[ ${OUTPUTTMP} == "True" ]]
 then
 	mount-tmp-output
-	
+	sync
 fi
-sync
 
 #create loop
 create-img

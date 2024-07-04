@@ -99,7 +99,6 @@ function set-locale() {
 	
 	debug-output "setting installation locale ..."
 	echo "LANG=${SETLOCALE}" > "${WORKDIR}/${ROOTFSDIR}/etc/locale.conf"
-	
 	echo "${SETLOCALE} ${ENCODING}" >> "${WORKDIR}/${ROOTFSDIR}/etc/locale.gen"
 	
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/locale-gen
@@ -140,7 +139,6 @@ function clean-configs() {
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/log/pacman.log
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/lib/pacman/sync/*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/${DLTMP}
-	rm -rf ${WORKDIR}/${NEWBOOTFSDIR}/grub/grub2.cfg
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/usr/bin/qemu-aarch64-static
 }
 

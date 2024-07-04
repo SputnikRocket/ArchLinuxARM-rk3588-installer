@@ -9,32 +9,32 @@ function setup-workdir() {
 	local WORKDIR=${1}
     
     debug-output "Creating working directories ..."
-    if [ ! -e "${WORKDIR}/${ROOTFSDIR}" ]
+    if [[ ! -e "${WORKDIR}/${ROOTFSDIR}" ]]
     then
 		mkdir -p "${WORKDIR}/${ROOTFSDIR}"
     fi
     
-    if [ ! -e "${WORKDIR}/${BOOTFSDIR}" ]
+    if [[ ! -e "${WORKDIR}/${BOOTFSDIR}" ]]
     then
 		mkdir -p "${WORKDIR}/${BOOTFSDIR}"
 	fi
 	
-	if [ ! -e "${WORKDIR}/${DLTMP}" ]
+	if [[ ! -e "${WORKDIR}/${DLTMP}" ]]
 	then
 		mkdir -p "${WORKDIR}/${DLTMP}"
 	fi
 
-	if [ ! -e "${WORKDIR}/${PKGCACHEDIR}" ]
+	if [[ ! -e "${WORKDIR}/${PKGCACHEDIR}" ]]
     then
 		mkdir -p "${WORKDIR}/${PKGCACHEDIR}"
     fi
     
-    if [ ! -e "${WORKDIR}/${TRANSIENTDIR}" ]
+    if [[ ! -e "${WORKDIR}/${TRANSIENTDIR}" ]]
     then
 		mkdir -p "${WORKDIR}/${TRANSIENTDIR}"
     fi
 
-	if [ ! -e "${OUTDIR}" ]
+	if [[ ! -e "${OUTDIR}" ]]
     then
 		mkdir -p "${OUTDIR}"
     fi
