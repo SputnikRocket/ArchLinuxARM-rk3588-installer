@@ -15,8 +15,27 @@ sync
 unmount-workdirs "${WORKDIR}"
 sync
 
+if [[ ${IMGBUILD} == "True" ]]
+then
+	clean-loop "${DISKDEVICE}"
+	sync
+fi
+
 if [ ${DLCACHE} = "False" ]
 then
 	clean-workdir "${WORKDIR}"
+	sync
 fi
-sync
+
+if [[ ${IMGBUILD} == "True" ]]
+then
+	compress-image
+	sync
+
+	gen-checksum
+	sync
+	
+	echo "building of ${IMAGEFILE} finished."
+else
+	echo "success! you may now remove ${DISKDEVICE}"
+fi

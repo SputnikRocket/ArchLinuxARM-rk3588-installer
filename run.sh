@@ -46,15 +46,7 @@ source runscripts/setupsystem.sh
 sync
 
 #unmount disks and clean workdirs or wrap up loopdev
-if [[ ${IMGBUILD} == "True" ]]
-then
-	source runscripts/wrapuploop.sh
-	
-elif [[ ${IMGBUILD} == "False" ]]
-then
-	source runscripts/wrapupdisk.sh
-fi
+source runscripts/wrapupdisk.sh
 sync
 
-echo "success! you may now remove ${DISKDEVICE}"
 exit 0
