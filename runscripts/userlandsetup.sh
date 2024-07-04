@@ -7,6 +7,15 @@ trap 'echo Error: in $0 on line $LINENO' ERR
 add-overlay-profile-hook
 add-overlay-platform-hook
 
+#create custom pacman configurations
+create-dir "${WORKDIR}" "etc/pacman.d/custom-conf"
+
+insert-string "[options]" "${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf"
+insert-string "Include\ \=\ /etc/pacman.d/custom-conf/general.conf" "${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf"
+insert-string "Include\ \=\ /etc/pacman.d/custom-conf/custom-repos.conf" "${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf"
+
+insert-string "ParallelDownloads\ \=\ 5" "${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/custom-conf/general.conf"
+
 #remove packages
 merge-lists "${PROFILE_PKGS_REMOVE}" "${PLATFORM_PKGS_REMOVE}" "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"
 check-file-empty "${WORKDIR}/${TRANSIENTDIR}/pkgs.remove"

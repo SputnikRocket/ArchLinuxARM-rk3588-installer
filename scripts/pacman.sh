@@ -131,8 +131,8 @@ function pac-add-repo() {
 	local REPOURL=${3}
 	
 	debug-output "Adding repo ${REPONAME} ${REPOURL}"
-	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
-	echo "${REPONAME}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
-	echo "SigLevel = Never" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
-	echo "${REPOURL}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.conf
+	echo "" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/custom-conf/custom-repos.conf
+	echo "${REPONAME}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/custom-conf/custom-repos.conf
+	echo "SigLevel = Never" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/custom-conf/custom-repos.conf
+	echo "${REPOURL}" >> ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/custom-conf/custom-repos.conf
 }

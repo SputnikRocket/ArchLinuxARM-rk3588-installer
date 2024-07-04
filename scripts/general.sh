@@ -197,7 +197,27 @@ function merge-lists() {
 	local LISTFILE2=${2}
 	local MERGEDFILE=${3}
 	
-	debug-output "Merging ${LISTFILE1} & ${LISTFILE2} into ${MERGEDFILE}"
+	debug-output "Merging ${LISTFILE1} & ${LISTFILE2} into ${MERGEDFILE} ..."
 	cat ${LISTFILE1} >> ${MERGEDFILE}
 	cat ${LISTFILE2} >> ${MERGEDFILE}
+}
+
+#add a string to a file
+function insert-string() {
+	
+	local INSERTSTRING=${1}
+	local OUTPUTFILE=${2}
+	
+	debug-output "Adding \"${INSERTSTRING}\" to ${OUTPUTFILE} ..."
+	echo ${INSERTSTRING} >> ${OUTPUTFILE}
+}
+
+#create dir
+function create-dir() {
+	
+	local WORKDIR=${1}
+	local DIRECTORY=${2}
+	
+	debug-output "Creating ${WORKDIR}/${ROOTFSDIR}/${DIRECTORY} ..."
+	mkdir -p ${WORKDIR}/${ROOTFSDIR}/${DIRECTORY}
 }
