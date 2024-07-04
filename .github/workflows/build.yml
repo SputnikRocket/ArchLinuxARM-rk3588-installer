@@ -27,9 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Build Host
         run: |
-          sudo apt update && sudo apt-get purge needrestart -y && sudo apt-get upgrade -y
+          sudo apt update && sudo apt-get purge needrestart firefox -y && sudo apt-get upgrade -y
           sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static rng-tools
-          sudo systemctl enable rngd && sudo systemctl start rngd
+          sudo rngd &
 
       - name: Build Image
         run: |
