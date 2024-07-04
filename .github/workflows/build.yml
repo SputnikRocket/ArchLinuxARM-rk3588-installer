@@ -1,35 +1,31 @@
-name: Build Arch Linux ARM for rk3588 UEFI
-
-# Controls when the workflow will run
+name: Build Arch-Like aarch64 UEFI
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     strategy:
         matrix:
           profile:
             - minimal
+
           platform:
             - generic_rk3588
+
           distro:
             - arch
             - artix_runit
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
-      # Runs a set of commands using the runners shell
-      - name: Install prequisites
+      - name: Setup Build Host
         run: |
           sudo apt update && sudo apt-get purge needrestart -y && sudo apt-get upgrade -y
           sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
@@ -38,7 +34,7 @@ jobs:
         run: |
           sudo bash ./run.sh --device find --platform ${{ matrix.platform }} --profile ${{ matrix.profile }} --distro ${{ matrix.distro }} --image --tmp --debug 
 
-      - name: Upload
+      - name: Upload Image
         uses: actions/upload-artifact@v4.3.1
         with:
           name: ${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi
