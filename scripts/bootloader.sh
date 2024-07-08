@@ -37,3 +37,14 @@ function mkconfig-grub() {
 	debug-output "generating grub.cfg ..."
 	chroot ${WORKDIR}/${ROOTFSDIR} ${CHROOT_EXEC} /bin/bash /bin/grub-mkconfig -o "/${EFIDIR}/grub/grub.cfg"
 }
+
+#install dtb to where uefi override can load it
+function install-dtb() {
+	
+	local WORKDIR=${1}
+	local DEVICETREE=${2}
+	
+	debug-output "Insalling ${DEVICETREE} to ESP ..."
+	mkdir -p ${WORKDIR}/${NEWBOOTFSDIR}/dtb/base
+	cp ${WORKDIR}/${NEWBOOTFSDIR}/dtbs/${DEVICETREE} ${WORKDIR}/${NEWBOOTFSDIR}/dtb/base/
+}
