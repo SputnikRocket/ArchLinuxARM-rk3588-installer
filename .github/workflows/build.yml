@@ -18,6 +18,7 @@ jobs:
 
           platform:
             - generic_rk3588
+            - fydetab_duo
 
           distro:
             - arch
