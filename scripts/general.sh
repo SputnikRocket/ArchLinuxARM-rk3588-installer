@@ -134,8 +134,7 @@ function clean-configs() {
 	local WORKDIR=${1}
 	
 	debug-output "Cleaning up install ..."
-	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/*
-	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg/.??*
+	rm -rf ${WORKDIR}/${ROOTFSDIR}/etc/pacman.d/gnupg
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/log/pacman.log
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/var/lib/pacman/sync/*
 	rm -rf ${WORKDIR}/${ROOTFSDIR}/${DLTMP}
