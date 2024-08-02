@@ -30,3 +30,4 @@ here are some of the ways you can contribute to this project, to show appreciati
 * @kwankiu for rk3588 kernel packages in his [repo](https://github.com/kwankiu/PKGBUILDs)
 * @Joshua-Riek and the [ubuntu-rockchip](https://github.com/Joshua-Riek/ubuntu-rockchip) project for some overlay files
 * @mariobalanica and all those part of the [edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588) project, for making this possible
+* @Rippanda12 and the [BredOS](https://github.com/BredOS) project for packages in the generic_aarch64 platform
