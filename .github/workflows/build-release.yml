@@ -1,0 +1,48 @@
+name: Build Arch-Like aarch64 UEFI (release)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    strategy:
+        matrix:
+          profile:
+            - minimal
+
+          platform:
+            - generic_rk3588
+            - generic_aarch64
+
+          distro:
+            - arch
+            # - artix_runit
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Build Host
+        run: |
+          sudo apt update && sudo apt-get purge needrestart firefox -y && sudo apt-get upgrade -y
+          sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
+
+      - name: Build Images
+        run: |
+          sudo bash ./run.sh --device find --platform ${{ matrix.platform }} --profile ${{ matrix.profile }} --distro ${{ matrix.distro }} --image --tmp --debug 
+
+      - name: Upload Images to Release
+        uses: ncipollo/release-action@v1
+        with:
+            tag: "release"
+            name: "release"
+            artifacts: "./outputs/${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi.img.xz*"
+            makeLatest: false
+            prerelease: true
+            allowUpdates: true
+            omitBody: true
+            draft: true

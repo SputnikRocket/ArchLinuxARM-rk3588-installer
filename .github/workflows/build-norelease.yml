@@ -1,0 +1,43 @@
+name: Build Arch-Like aarch64 UEFI (norelease)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    strategy:
+        matrix:
+          profile:
+            - minimal
+
+          platform:
+            - generic_rk3588
+            - generic_aarch64
+
+          distro:
+            - arch
+            - artix_runit
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Build Host
+        run: |
+          sudo apt update && sudo apt-get purge needrestart firefox -y && sudo apt-get upgrade -y
+          sudo apt install dosfstools gdisk aria2 uuid-runtime libarchive-tools parted xz-utils qemu-user-static
+
+      - name: Build Image
+        run: |
+          sudo bash ./run.sh --device find --platform ${{ matrix.platform }} --profile ${{ matrix.profile }} --distro ${{ matrix.distro }} --image --tmp --debug 
+
+      - name: Upload Image
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: ${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi
+          path: ./outputs/${{ matrix.distro }}-${{ matrix.platform }}-${{ matrix.profile }}-uefi.img.xz*
+          if-no-files-found: error
