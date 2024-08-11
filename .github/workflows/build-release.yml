@@ -1,9 +1,6 @@
 name: Build Arch-Like aarch64 UEFI (release)
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
