@@ -4,6 +4,8 @@
 
 Arch Linux ARM image builder and installer for aarch64 UEFI devices, focusing on rk3588.
 
+## This project is currently being rewritten, so there may be a lack of visible progress or releases. 
+
 requires [edk2-porting/edk2-rk3588](https://github.com/edk2-porting/edk2-rk3588) installed on SPI flash or an sdcard to boot.
 
 ## Installation Instructions
