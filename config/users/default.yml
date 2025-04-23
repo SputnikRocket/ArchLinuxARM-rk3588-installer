@@ -1,0 +1,9 @@
+users:
+  root:
+    password: RootPasswdPlsChangeMe123
+    
+  regular:
+    archuefi:
+      password: PasswdPlsChangeMe123
+      groups:
+        - wheel
