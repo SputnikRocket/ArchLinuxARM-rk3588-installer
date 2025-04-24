@@ -2,5 +2,5 @@ dbus
 dbus-daemon-units
 gptfdisk
 parted
-grub
+BredOS/grub
 efibootmgr
