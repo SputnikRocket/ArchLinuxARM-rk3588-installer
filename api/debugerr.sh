@@ -3,7 +3,6 @@
 set -eE
 trap 'echo Error: in api/debugerr.sh on line $LINENO' ERR
 
-
 # ANSI Color codes
 if [[ "${NoColor}" == "1" ]]
 then
@@ -20,7 +19,6 @@ else
 	
 fi
 
-
 # Error messages
 function Print-Error () {
 	
@@ -29,19 +27,17 @@ function Print-Error () {
 	echo -e "${YellowColor}[${RedColor}ERROR${YellowColor}]${ResetColor} ${ErrorMsg}"
 }
 
-
 # Debug messages
 function Print-Debug () {
 	
 	local DebugMsg=${1}
 	local DebugLevel=${2}
 	
-	if [[ $((${Debug})) -ge $((${DebugLevel})) ]]
+	if [[ $((Debug)) -ge $((DebugLevel)) ]]
 	then
 		echo -e "${YellowColor}[${GreenColor}DEBUG${YellowColor}]${ResetColor} ${DebugMsg}"
 	
 	fi
 }
-
 
 trap '' EXIT
