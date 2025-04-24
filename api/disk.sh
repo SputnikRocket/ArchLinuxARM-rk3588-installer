@@ -3,15 +3,11 @@
 set -eE
 trap 'Print-Error " in api/disk.sh on line ${LINENO}"' ERR
 
-
 # Wipe disk & create partitions
 function Setup-Disk () {
 	
 	local DiskDevice=${1}
 	local ConfigYaml=${2}
-	local GuestFstab=${3}
-	local MountTab=${4}
-	
 	
 	# Get list of partitions
 	Yaml-Element-GetSubLists "${ConfigYaml}" ".partitions"
@@ -41,7 +37,7 @@ function Setup-Disk () {
 	
 	
 	# Clear partition table on disk
-	Print-Debug "Recreating GPT on ${DiskDevice}..."
+	Print-Debug "Recreating GPT on ${DiskDevice}..." 1
 	sgdisk -Z "${DiskDevice}"
 	sgdisk -o "${DiskDevice}"
 	sync
@@ -141,12 +137,27 @@ function Setup-Disk () {
 			
 		fi
 		
-		# Add fstab entry for guest
-		echo "UUID=${FstabUuid}	${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${GuestFstab}"
-		echo "UUID=${FstabUuid}	${WORKDIR_DISKFS_PATH}${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${MountTab}"
+		# Create fstab entry and mount path
+		Print-Debug "Adding entry for ${PartMountPath} to base fstab..." 3
+		echo "UUID=${FstabUuid}	${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
+		echo "${PartMountPath}" >> "${WORKDIR_TRANSIENT_PATH}/mounts_initial"
 		
 	done
-}
+	
+	# Rebuild mounts and fstabs in proper order
+	Print-Debug "Generating final fstabs..." 1
+	Print-Debug "Generating fstab for guest..." 2
+	sort -n "${WORKDIR_TRANSIENT_PATH}/mounts_initial" > "${WORKDIR_TRANSIENT_PATH}/mounts_final"
+	while read -r Mount
+	do
+		grep "$(printf '\t')${Mount}$(printf '\t')" "${WORKDIR_TRANSIENT_PATH}/fstab_initial" >> "${WORKDIR_TRANSIENT_PATH}/fstab_final.guest"
+		
+	done < "${WORKDIR_TRANSIENT_PATH}/mounts_final"
+	
+	# Create installer fstab
+	Print-Debug "Generating fstab for installer..." 2
+	sed -E "s|\t\/|\t${WORKDIR_DISKFS_PATH}\/|g" "${WORKDIR_TRANSIENT_PATH}/fstab_final.guest" > "${WORKDIR_TRANSIENT_PATH}/fstab_final.installer"
 
+}
 
 trap '' EXIT
