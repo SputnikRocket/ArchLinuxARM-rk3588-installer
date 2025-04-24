@@ -22,7 +22,7 @@ jobs:
 
           distro:
             - arch
-            - artix_runit
+#            - artix_runit
 
     steps:
       - uses: actions/checkout@v4
