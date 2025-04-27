@@ -56,26 +56,26 @@ function Setup-Disk () {
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.type"
 		local PartType="${YamlOutput}"
 		
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.fs"
+		local PartFsType="${YamlOutput}"
+		
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.offsets.start"
 		local PartStart="${YamlOutput}"
 		
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.offsets.end"
 		local PartEnd="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.fsinfo.type"
-		local PartFsType="${YamlOutput}"
-		
 		# Get mount details
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.fsinfo.mountopts.path"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.path"
 		local PartMountPath="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.fsinfo.mountopts.flags"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.flags"
 		local PartMountFlags="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.fsinfo.mountopts.backup"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.backup"
 		local PartMountBackup="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.fsinfo.mountopts.check"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.check"
 		local PartMountCheck="${YamlOutput}"
 		
 		# Generate filesystem UUIDs
@@ -129,6 +129,12 @@ function Setup-Disk () {
 			yes | mkfs.ext4 -U "${PartUuid}" "${DiskDevice}${PartSeparator}${PartNum}"
 			sync
 			
+		elif [[ "${PartFsType}" == "f2fs" ]]
+		then
+			Print-Debug "Creating f2fs filesystem on ${DiskDevice}${PartSeparator}${PartNum}..." 1
+			yes | mkfs.f2fs -f -U "${PartUuid}" "${DiskDevice}${PartSeparator}${PartNum}"
+			sync
+		
 		elif [[ "${PartFsType}" == "btrfs" ]]
 		then
 			Print-Debug "Creating btrfs filesystem on ${DiskDevice}${PartSeparator}${PartNum}..." 1

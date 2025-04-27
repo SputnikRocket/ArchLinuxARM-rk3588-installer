@@ -1,15 +1,15 @@
-# Disk partition layout for ArchLike UEFI Installer with ext4 root
+# Disk partition layout for ArchLike UEFI Installer with f2fs root
 
 # Check for commands needed to accomplish the specified disk layout
 checkcmd:
   - mkfs.vfat
-  - mkfs.ext4
+  - mkfs.f2fs
 
 # Helper tools to install on guest for specified filesystems
 packages:
   install:
     - dosfstools
-    - e2fsprogs
+    - f2fs-tools
 
 # Partition layout, filesystems, and mount data
 partitions:
@@ -34,7 +34,7 @@ partitions:
       partnum: 2
       label: "ARCHLIKE_ROOT"
       type: "root"
-      fs: "ext4"
+      fs: "f2fs"
       offsets:
         start: "0"
         end: "0"
@@ -44,4 +44,3 @@ partitions:
       flags: "defaults"
       backup: 0
       check: 1
-
