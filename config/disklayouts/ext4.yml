@@ -1,4 +1,4 @@
-# Disk partition layout for ArchLike UEFI Installer with ext4 8305
+# Disk partition layout for ArchLike UEFI Installer with ext4 root
 
 # Check for commands needed to accomplish the specified disk layout
 checkcmd:
