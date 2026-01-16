@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eE
-trap 'Print-Error " in api/disk.sh on line ${LINENO}"' ERR
+trap 'Print-Error " in api/paths.sh on line ${LINENO}"' ERR
 
 # Installer root path
 INSTALLER_ROOT="$(pwd)"
