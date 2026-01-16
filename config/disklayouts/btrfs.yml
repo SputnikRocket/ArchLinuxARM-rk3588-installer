@@ -1,0 +1,83 @@
+# Disk partition layout for ArchLike UEFI Installer with btrfs root
+
+# Check for commands needed to accomplish the specified disk layout
+checkcmd:
+  - mkfs.vfat
+  - mkfs.btrfs
+  - btrfs
+
+# Helper tools to install on guest for specified filesystems
+packages:
+  install:
+    - dosfstools
+    - btrfs-tools
+
+# Partition layout, filesystems, and mount data
+partitions:
+  part1:
+    partinfo:
+      partnum: 1
+      label: "ARCHLIKE_BOOT"
+      typecode: "ef00"
+      filesystem: "vfat"
+      offsets:
+        start: "0"
+        end: "+512M"
+
+    mountopts:
+      path: "/efi"
+      flags: "defaults"
+      backup: 0
+      check: 2
+
+  part2:
+    partinfo:
+      partnum: 2
+      label: "ARCHLIKE_ROOT"
+      typecode: "8305"
+      filesystem: "btrfs"
+      offsets:
+        start: "0"
+        end: "0"
+
+    hassubvols: "yes"
+    subvols:
+      subvol1:
+        name: "@"
+        mountopts:
+          path: "/"
+          flags: "defaults"
+          backup: 0
+          check: 1
+
+      subvol2:
+        name: "@home"
+        mountopts:
+          path: "/home"
+          flags: "defaults"
+          backup: 0
+          check: 2
+
+      subvol3:
+        name: "@log"
+        mountopts:
+          path: "/var/log"
+          flags: "defaults"
+          backup: 0
+          check: 2
+
+      subvol4:
+        name: "@cache"
+        mountopts:
+          path: "/var/cache"
+          flags: "defaults"
+          backup: 0
+          check: 2
+
+      subvol5:
+        name: ".snapshots"
+        mountopts:
+          path: "/.snapshots"
+          flags: "defaults"
+          backup: 0
+          check: 2
