@@ -5,9 +5,9 @@ trap 'Print-Error " in api/disk.sh on line ${LINENO}"' ERR
 
 # Wipe disk & create partitions
 function Setup-Disk () {
-	
 	local DiskDevice=${1}
 	local ConfigYaml=${2}
+
 	
 	# Get list of partitions
 	Yaml-Element-GetSubLists "${ConfigYaml}" ".partitions"
@@ -53,10 +53,10 @@ function Setup-Disk () {
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.label"
 		local PartLabel="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.type"
-		local PartType="${YamlOutput}"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.typecode"
+		local PartTypeCode="${YamlOutput}"
 		
-		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.fs"
+		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.filesystem"
 		local PartFsType="${YamlOutput}"
 		
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.offsets.start"
@@ -64,6 +64,7 @@ function Setup-Disk () {
 		
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.offsets.end"
 		local PartEnd="${YamlOutput}"
+		
 		
 		# Get mount details
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.path"
@@ -78,7 +79,8 @@ function Setup-Disk () {
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.check"
 		local PartMountCheck="${YamlOutput}"
 		
-		# Generate filesystem UUIDs
+		
+		# Generate filesystem UUID
 		Print-Debug "Generating UUID for filesystem..." 1
 		if [[ "${PartFsType}" == "vfat" ]]
 		then
@@ -92,17 +94,17 @@ function Setup-Disk () {
 		Print-Debug "Filesystem UUID is ${PartUuid}" 2
 		
 		
-		# Create partitions
+		# Create partition
 		Print-Debug "Creating partition ${PartNum} on ${DiskDevice}..." 1
 		sgdisk -n "${PartNum}:${PartStart}:${PartEnd}" "${DiskDevice}"
 		sync
 		
 		
-		# Set partition to ESP if specified
-		if [[ "${PartType}" == "esp" ]]
+		# Set partition type if specified
+		if [[ "${PartTypeCode}" != "null" ]]
 		then
-			Print-Debug "Setting partition ${DiskDevice}${PartSeparator}${PartNum} type to ESP..." 2
-			sgdisk -t "${PartNum}:ef00" "${DiskDevice}"
+			Print-Debug "Setting partition ${DiskDevice}${PartSeparator}${PartNum} type code to ${PartTypeCode}..." 2
+			sgdisk -t "${PartNum}:${PartTypeCode}" "${DiskDevice}"
 			sync
 		
 		fi
