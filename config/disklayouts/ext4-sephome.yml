@@ -1,0 +1,63 @@
+# Disk partition layout for ArchLike UEFI Installer with split ext4 root and home filesystems
+
+# Check for commands needed to accomplish the specified disk layout
+checkcmd:
+  - mkfs.vfat
+  - mkfs.ext4
+
+# Helper tools to install on guest for specified filesystems
+packages:
+  install:
+    - dosfstools
+    - e2fsprogs
+
+# Partition layout, filesystems, and mount data
+partitions:
+  part1:
+    partinfo:
+      partnum: 1
+      label: "ARCHLIKE_BOOT"
+      typecode: "ef00"
+      filesystem: "vfat"
+      offsets:
+        start: "0"
+        end: "+512M"
+
+    mountopts:
+      path: "/efi"
+      flags: "defaults"
+      backup: 0
+      check: 2
+
+  part2:
+    partinfo:
+      partnum: 2
+      label: "ARCHLIKE_ROOT"
+      typecode: "8305"
+      filesystem: "ext4"
+      offsets:
+        start: "0"
+        end: "+2G"
+      
+    mountopts:
+      path: "/"
+      flags: "defaults"
+      backup: 0
+      check: 1
+        
+  part3:
+    partinfo:
+      partnum: 3
+      label: "ARCHLIKE_HOME"
+      typecode: "8302"
+      filesystem: "ext4"
+      offsets:
+        start: "0"
+        end: "0"
+
+    mountopts:
+      path: "/home"
+      flags: "defaults"
+      backup: 0
+      check: 0
+
