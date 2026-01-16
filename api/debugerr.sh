@@ -4,7 +4,7 @@ set -eE
 trap 'echo Error: in api/debugerr.sh on line $LINENO' ERR
 
 # ANSI Color codes
-if [[ "${NoColor}" == "1" ]]
+if [[ "${NoColor:=}" == "1" ]]
 then
 	RedColor=""
 	YellowColor=""
@@ -30,6 +30,7 @@ function Print-Error () {
 # Debug messages
 function Print-Debug () {
 	
+	Debug="${Debug:=}"
 	local DebugMsg=${1}
 	local DebugLevel=${2}
 	

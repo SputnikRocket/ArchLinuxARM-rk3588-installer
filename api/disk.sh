@@ -11,7 +11,7 @@ function Setup-Disk () {
 	
 	# Get list of partitions
 	Yaml-Element-GetSubLists "${ConfigYaml}" ".partitions"
-	local PartList="${YamlOutput}"
+	local PartList="${YamlOutput:?}"
 	
 	
 	# Check if specified file is block device
@@ -82,14 +82,16 @@ function Setup-Disk () {
 				
 		# Generate filesystem UUID
 		Print-Debug "Generating UUID for filesystem..." 1
+		local PartUuid
 		if [[ "${PartFsType}" == "vfat" ]]
 		then
-			local PartUuid="$(uuidgen | head -c8)"
-			local FstabUuid="$(echo "${PartUuid^^}" | sed 's/./&-/4')"
+			local VfatUuid
+			VfatUuid="$(uuidgen | head -c8)"
+			PartUuid="$(echo "${VfatUuid}" | tr '[:lower:]' '[:upper:]' | sed 's/./&-/4')"
 			
 		else
-			local PartUuid="$(uuidgen | sed "s|[A-Z]|\L&|g")"
-			local FstabUuid="${PartUuid}"
+			PartUuid="$(uuidgen | sed "s|[A-Z]|\L&|g")"
+		
 		fi
 		Print-Debug "Filesystem UUID is ${PartUuid}" 2
 		
@@ -124,7 +126,7 @@ function Setup-Disk () {
 		if [[ "${PartFsType}" == "vfat" ]]
 		then
 			Print-Debug "Creating fat32 filesystem on ${DiskDevice}${PartSeparator}${PartNum}..." 1
-			yes | mkfs.vfat -i "${PartUuid}" -F 32 "${DiskDevice}${PartSeparator}${PartNum}"
+			yes | mkfs.vfat -i "${VfatUuid}" -F 32 "${DiskDevice}${PartSeparator}${PartNum}"
 			sync
 			
 		elif [[ "${PartFsType}" == "ext4" ]]
@@ -192,7 +194,7 @@ function Setup-Disk () {
 					then
 						# Create fstab entry and mount path
 						Print-Debug "Adding entry for ${SubVolMountPath} to base fstab..." 3
-						echo "UUID=${FstabUuid}	${SubVolMountPath}	${PartFsType}	${SubVolMountFlags},subvol=/${SubVolName}	${SubVolMountBackup}	${SubVolMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
+						echo "UUID=${PartUuid}	${SubVolMountPath}	${PartFsType}	${SubVolMountFlags},subvol=/${SubVolName}	${SubVolMountBackup}	${SubVolMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
 						echo "${SubVolMountPath}" >> "${WORKDIR_TRANSIENT_PATH}/mounts_initial"
 			
 					fi
@@ -212,7 +214,7 @@ function Setup-Disk () {
 		then
 			# Create fstab entry and mount path
 			Print-Debug "Adding entry for ${PartMountPath} to base fstab..." 3
-			echo "UUID=${FstabUuid}	${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
+			echo "UUID=${PartUuid}	${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
 			echo "${PartMountPath}" >> "${WORKDIR_TRANSIENT_PATH}/mounts_initial"
 			
 		fi
