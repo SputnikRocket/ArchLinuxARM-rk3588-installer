@@ -1,4 +1,4 @@
-# Disk partition layout for ArchLike UEFI Installer with ext4 root
+# Disk partition layout for ArchLike UEFI Installer with ext4 8305
 
 # Check for commands needed to accomplish the specified disk layout
 checkcmd:
@@ -17,8 +17,8 @@ partitions:
     partinfo:
       partnum: 1
       label: "ARCHLIKE_BOOT"
-      type: "esp"
-      fs: "vfat"
+      typecode: "ef00"
+      filesystem: "vfat"
       offsets:
         start: "0"
         end: "+512M"
@@ -33,8 +33,8 @@ partitions:
     partinfo:
       partnum: 2
       label: "ARCHLIKE_ROOT"
-      type: "root"
-      fs: "ext4"
+      typecode: "8305"
+      filesystem: "ext4"
       offsets:
         start: "0"
         end: "0"

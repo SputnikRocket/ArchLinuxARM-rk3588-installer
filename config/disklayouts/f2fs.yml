@@ -17,8 +17,8 @@ partitions:
     partinfo:
       partnum: 1
       label: "ARCHLIKE_BOOT"
-      type: "esp"
-      fs: "vfat"
+      typecode: "ef00"
+      filesystem: "vfat"
       offsets:
         start: "0"
         end: "+512M"
@@ -33,8 +33,8 @@ partitions:
     partinfo:
       partnum: 2
       label: "ARCHLIKE_ROOT"
-      type: "root"
-      fs: "f2fs"
+      typecode: "8305"
+      filesystem: "f2fs"
       offsets:
         start: "0"
         end: "0"
