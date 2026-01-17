@@ -4,15 +4,16 @@ set -eE
 trap 'Print-Error " in api/disk.sh on line ${LINENO}"' ERR
 
 # Wipe disk & create partitions
-function Setup-Disk () {
+function Setup-Disk () {	
 	local DiskDevice=${1}
 	local ConfigYaml=${2}
 
-	
+	local PartUuid
+	local VfatUuid
+
 	# Get list of partitions
 	Yaml-Element-GetSubLists "${ConfigYaml}" ".partitions"
 	local PartList="${YamlOutput:?}"
-	
 	
 	# Check if specified file is block device
 	Print-Debug "Checking if specified disk is block device..." 1
@@ -24,24 +25,19 @@ function Setup-Disk () {
 		exit 1
 	fi
 	
-	
 	# Check whether to add a "p" between device name and partition number 
 	if [[ "${DiskDevice}" == *"nvme"* ]] || [[ "${DiskDevice}" == *"mmc"* ]] || [[ "${DiskDevice}" == *"loop"* ]]
 	then
 		local PartSeparator="p"
-	
 	else
-		local PartSeparator=""
-		
+		local PartSeparator=""	
 	fi
-	
 	
 	# Clear partition table on disk
 	Print-Debug "Recreating GPT on ${DiskDevice}..." 1
 	sgdisk -Z "${DiskDevice}"
 	sgdisk -o "${DiskDevice}"
 	sync
-	
 	
 	# Recurse through partition list, creating each one
 	for Part in ${PartList}
@@ -65,7 +61,6 @@ function Setup-Disk () {
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.partinfo.offsets.end"
 		local PartEnd="${YamlOutput}"
 		
-		
 		# Get mount details
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.path"
 		local PartMountPath="${YamlOutput}"
@@ -79,28 +74,22 @@ function Setup-Disk () {
 		Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.mountopts.check"
 		local PartMountCheck="${YamlOutput}"
 		
-				
 		# Generate filesystem UUID
 		Print-Debug "Generating UUID for filesystem..." 1
-		local PartUuid
 		if [[ "${PartFsType}" == "vfat" ]]
 		then
-			local VfatUuid
 			VfatUuid="$(uuidgen | head -c8)"
 			PartUuid="$(echo "${VfatUuid}" | tr '[:lower:]' '[:upper:]' | sed 's/./&-/4')"
-			
 		else
 			PartUuid="$(uuidgen | sed "s|[A-Z]|\L&|g")"
-		
 		fi
-		Print-Debug "Filesystem UUID is ${PartUuid}" 2
 		
+		Print-Debug "Filesystem UUID is ${PartUuid}" 2
 		
 		# Create partition
 		Print-Debug "Creating partition ${PartNum} on ${DiskDevice}..." 1
 		sgdisk -n "${PartNum}:${PartStart}:${PartEnd}" "${DiskDevice}"
 		sync
-		
 		
 		# Set partition type if specified
 		if [[ "${PartTypeCode}" != "null" ]]
@@ -108,20 +97,16 @@ function Setup-Disk () {
 			Print-Debug "Setting partition ${DiskDevice}${PartSeparator}${PartNum} type code to ${PartTypeCode}..." 2
 			sgdisk -t "${PartNum}:${PartTypeCode}" "${DiskDevice}"
 			sync
-		
 		fi
-		
 		
 		# Add label to partition if specified
 		if [[ "${PartLabel}" != "null" ]]
 		then
 			Print-Debug "Setting partition ${DiskDevice}${PartSeparator}${PartNum} name to ${PartLabel}..." 2
 			sgdisk -c "${PartNum}:${PartLabel}" "${DiskDevice}"
-			sync
-			
+			sync	
 		fi
-		
-		
+			
 		# Format partitions
 		if [[ "${PartFsType}" == "vfat" ]]
 		then
@@ -147,11 +132,9 @@ function Setup-Disk () {
 			yes | mkfs.btrfs -f -U "${PartUuid}" "${DiskDevice}${PartSeparator}${PartNum}"
 			sync
 			
-			
 			# Check if the BTRFS filesystem has subvolumes
 			Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.hassubvols"
 			local HasSubVols="${YamlOutput}"
-			
 			
 			# Create subvolumes if above is yes 
 			if [[ "${HasSubVols}" == "yes" ]]
@@ -160,11 +143,9 @@ function Setup-Disk () {
 				Yaml-Element-GetSubLists "${ConfigYaml}" ".partitions.${Part}.subvols"
 				local SubVols="${YamlOutput}"
 				
-				
 				# Mount BTRFS parent volume
 				Print-Debug "Mounting BTRFS parent filesystem..." 3
 				mount "${DiskDevice}${PartSeparator}${PartNum}" "${WORKDIR_DISKFS_PATH}"
-				
 				
 				# Recurse through subvolume list, creating each one
 				for SubVol in ${SubVols}
@@ -185,11 +166,9 @@ function Setup-Disk () {
 					Yaml-Element-GetVal "${ConfigYaml}" ".partitions.${Part}.subvols.${SubVol}.mountopts.check"
 					local SubVolMountCheck="${YamlOutput}"
 					
-					
 					# Create subvolume
 					Print-Debug "Creating BTRFS subvolume ${SubVolName}..." 2
 					btrfs subvolume create "${WORKDIR_DISKFS_PATH}/${SubVolName}"
-					
 					
 					# Check if subvolume doesn't have a mountpoint
 					if [[ "${SubVolMountPath}" != "null" ]]
@@ -198,18 +177,13 @@ function Setup-Disk () {
 						Print-Debug "Adding entry for ${SubVolMountPath} to base fstab..." 3
 						echo "UUID=${PartUuid}	${SubVolMountPath}	${PartFsType}	${SubVolMountFlags},subvol=/${SubVolName}	${SubVolMountBackup}	${SubVolMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
 						echo "${SubVolMountPath}" >> "${WORKDIR_TRANSIENT_PATH}/mounts_initial"
-			
-					fi
-					
+					fi	
 				done
-				
 				
 				# Unmount BTRFS parent volume
 				Print-Debug "Unmounting BTRFS parent filesystem..." 3
 				umount "${DiskDevice}${PartSeparator}${PartNum}"
-				
 			fi
-				
 		fi
 		
 		# Check if partition doesn't have a mount point or is BTRFS with subvolumes
@@ -219,9 +193,7 @@ function Setup-Disk () {
 			Print-Debug "Adding entry for ${PartMountPath} to base fstab..." 3
 			echo "UUID=${PartUuid}	${PartMountPath}	${PartFsType}	${PartMountFlags}	${PartMountBackup}	${PartMountCheck}" >> "${WORKDIR_TRANSIENT_PATH}/fstab_initial"
 			echo "${PartMountPath}" >> "${WORKDIR_TRANSIENT_PATH}/mounts_initial"
-			
 		fi
-		
 	done
 	
 	# Rebuild mounts and fstabs in proper order
@@ -231,13 +203,12 @@ function Setup-Disk () {
 	while read -r Mount
 	do
 		grep "$(printf '\t')${Mount}$(printf '\t')" "${WORKDIR_TRANSIENT_PATH}/fstab_initial" >> "${WORKDIR_TRANSIENT_PATH}/fstab_final.guest"
-		
+	
 	done < "${WORKDIR_TRANSIENT_PATH}/mounts_final"
 	
 	# Create installer fstab
 	Print-Debug "Generating fstab for installer..." 2
 	sed -E "s|\t\/|\t${WORKDIR_DISKFS_PATH}\/|g" "${WORKDIR_TRANSIENT_PATH}/fstab_final.guest" > "${WORKDIR_TRANSIENT_PATH}/fstab_final.installer"
-
 }
 
 trap '' EXIT

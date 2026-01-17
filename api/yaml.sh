@@ -5,7 +5,6 @@ trap 'Print-Error " in api/yaml.sh on line ${LINENO}"' ERR
 
 # Return first level list elements
 function Yaml-Element-GetSubLists () {
-	
 	local YamlFile=${1}
 	local Address=${2}
 	
@@ -21,7 +20,6 @@ function Yaml-Element-GetSubLists () {
 
 # Return value from element
 function Yaml-Element-GetVal () {
-	
 	local YamlFile=${1}
 	local Address=${2}
 	
@@ -37,7 +35,6 @@ function Yaml-Element-GetVal () {
 
 # Return values from list
 function Yaml-Element-GetList () {
-	
 	local YamlFile=${1}
 	local Address=${2}
 	
@@ -53,7 +50,6 @@ function Yaml-Element-GetList () {
 
 # Merge lists and eliminate duplicates
 function Yaml-Element-MergeLists () {
-	
 	local Address=${1}
 	local YamlFiles=($(echo "${@}" | sed "s|${1}\ ||g"))
 	
