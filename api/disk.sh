@@ -162,6 +162,7 @@ function Setup-Disk () {
 				
 				
 				# Mount BTRFS parent volume
+				Print-Debug "Mounting BTRFS parent filesystem..." 3
 				mount "${DiskDevice}${PartSeparator}${PartNum}" "${WORKDIR_DISKFS_PATH}"
 				
 				
@@ -186,6 +187,7 @@ function Setup-Disk () {
 					
 					
 					# Create subvolume
+					Print-Debug "Creating BTRFS subvolume ${SubVolName}..." 2
 					btrfs subvolume create "${WORKDIR_DISKFS_PATH}/${SubVolName}"
 					
 					
@@ -203,6 +205,7 @@ function Setup-Disk () {
 				
 				
 				# Unmount BTRFS parent volume
+				Print-Debug "Unmounting BTRFS parent filesystem..." 3
 				umount "${DiskDevice}${PartSeparator}${PartNum}"
 				
 			fi
