@@ -66,7 +66,7 @@ function Yaml-Element-MergeLists () {
 	    MergedElements="${MergedElements}\n${Elements}"
 	done
 	
-	MergedElements=$(echo "${MergedElements}" | sort -u | sed "/^$/d")
+	MergedElements=$(echo -e "${MergedElements}" | sort -u | sed "/^$/d")
 	
 	Print-Debug "Merged Elements:\n${MergedElements}" 4
 	YamlOutput="${MergedElements}"
