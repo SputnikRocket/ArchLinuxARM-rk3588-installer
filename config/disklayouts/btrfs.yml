@@ -10,7 +10,7 @@ checkcmd:
 packages:
   install:
     - dosfstools
-    - btrfs-tools
+    - btrfs-progs
 
 # Partition layout, filesystems, and mount data
 partitions:
