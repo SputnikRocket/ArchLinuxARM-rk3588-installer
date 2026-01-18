@@ -15,7 +15,7 @@ export CONFIG_PATH="${INSTALLER_ROOT}/config"
 export CONFIG_INSTALLER_PATH="${CONFIG_PATH}/installer"
 export CONFIG_PLATFORM_PATH="${CONFIG_PATH}/platforms"
 export CONFIG_PROFILE_PATH="${CONFIG_PATH}/profiles"
-export CONFIG_USER_PATH="${CONFIG_PATH}/users"
+export CONFIG_USER_PATH="${CONFIG_PATH}/userprofiles"
 export CONFIG_BOOTLOADER_PATH="${CONFIG_PATH}/bootloaders"
 export CONFIG_DISKLAYOUT_PATH="${CONFIG_PATH}/disklayouts"
 
