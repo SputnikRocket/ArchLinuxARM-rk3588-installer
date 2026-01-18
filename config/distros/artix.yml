@@ -1,0 +1,25 @@
+# Artix base configuration for Armtix (Artix Liniux for ARM64) for ArchLike UEFI Installer
+
+# Distro-specific details and where to get rootfs tarball
+distro:
+  name: "Artix Linux ARM"
+  rootfsurl: "https://armtix.artixlinux.org/images/armtix-runit-20251108.tar.xz"
+  init: "runit"
+  
+# Clean up some default packages contained in base rootfs
+packages:
+  install:
+    - dracut
+    - opendoas
+
+  remove:
+    - btrfs-progs
+    - dosfstools
+    - f2fs-tools
+    - linux-aarch64
+    - linux-aarch64-headers
+    - linux-aarch64-lts
+    - linux-aarch64-lts-headers
+    - sudo
+    - xfsprogs
+    - mkinitcpio
